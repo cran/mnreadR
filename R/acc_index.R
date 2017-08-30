@@ -1,12 +1,12 @@
 #----- ReadingAccessibilityIndex -------
 #####################################---
 
-#' Reading Accessibility Index (ACC) calculation
+#' Reading ACCessibility Index (ACC) calculation
 #'
 #' This function calculates the Reading Accessibility Index, while applying suited rules for missing data.
 #'
 #' @param data The name of your dataframe
-#' @param print_size The variable that contains print size values for each sentence
+#' @param print_size The variable that contains print size values for each sentence (print size uncorrected for viewing distance)
 #' @param reading_time The variable that contains the reading time for each sentence
 #' @param errors The variable that contains the number of errors for each sentence
 #' @param ... Optional grouping arguments
@@ -14,26 +14,28 @@
 #' @return The function returns a new dataframe with a variable called "ACC" that contains the Reading Accessibility Index estimate.
 #'
 #' @section Notes:
-#' The Reading Accessibility Index (ACC) is a new measure representing an individual's access to text over the range of print sizes found in everyday life.
+#' The Reading ACCessibility Index (ACC) is a new measure representing an individual's access to text over the range of print sizes found in everyday life.
 #' Its calculation does not rely on curve fitting and gives a direct comparison with the performance of normally sighted individuals.
 #' The ACC calculation uses the print size values non corrected for non-standard viewing distance.
 #'
 #' For more details on the Reading Accessibility Index, see \url{http://archopht.jamanetwork.com/article.aspx?articleid=2487490}
 #'
 #' @section Warning:
-#' To ensure that missing data are handled properly and that ACC calculation is correct, the data needs to be entered along certain rules:
+#' To ensure that missing data are handled properly and that ACC calculation is correct, data need to be entered along certain rules:
 #'  \itemize{
-#'   \item For the smallest print size that is presented but not read, right before the test is stopped: \strong{rt = NA, err = 10}
-#'   \item For all the small sentences that are not presented because the test was stopped before them: \strong{rt = NA, err = NA}
-#'   \item If a sentence is presented, and read, but the time was not recorded by the experimenter: \strong{rt = NA, err = actual number of errors} (cf. s5-regular in low vision data sample)
-#'   \item If a large sentence was skipped to save time but would have been read well: \strong{rt = NA, err = NA} (cf. s1-regular in normal vision data sample)
-#'   \item If a large sentence was skipped to save time because the subject cannot read large print: \strong{rt = NA, err = 10} (cf. s7 in low vision data sample)
+#'   \item For the smallest print size that is presented but not read, right before the test is stopped:\\ \strong{rt = NA, err = 10}
+#'   \item For all the small sentences that are not presented because the test was stopped before them:\\ \strong{rt = NA, err = NA}
+#'   \item If a sentence is presented, and read, but the time was not recorded by the experimenter:\\ \strong{rt = NA, err = actual number of errors} (cf. s5-regular in low vision data sample)
+#'   \item If a large sentence was skipped to save time but would have been read well:\\ \strong{rt = NA, err = NA} (cf. s1-regular in normal vision data sample)
+#'   \item If a large sentence was skipped to save time because the subject cannot read large print:\\ \strong{rt = NA, err = 10} (cf. s7 in low vision data sample)
 #'   }
 #'
 #' @seealso
 #'  \code{\link{mnreadParam}} for all MNREAD parameters estimation
 #'
-#'  \code{\link{curveParam}} for Maximum Reading Speed and Critical Print Size estimation
+#'  \code{\link{curveParam_RT}} for MRS and CPS estimation using values of reading time (instead of reading speed)
+#'
+#'  \code{\link{curveParam_RS}} for MRS and CPS estimation using values of reading speed (instead of reading time)
 #'
 #'  \code{\link{readingAcuity}} for Reading Acuity calculation
 #'
@@ -48,7 +50,7 @@
 #' @examples    filter (subject == "s1", polarity == "regular")
 #'
 #' @examples # run the reading accessibility index calculation
-#' @examples data_low_vision_ACC <- ACCcalc(data_s1, ps, rt, err)
+#' @examples data_low_vision_ACC <- accIndex(data_s1, ps, rt, err)
 #'
 #' @examples # inspect the newly created dataframe
 #' @examples data_low_vision_ACC
@@ -57,7 +59,7 @@
 #'
 #' @examples # run the reading accessibility index calculation
 #' @examples # on the whole dataset grouped by subject and polarity
-#' @examples data_low_vision_ACC <- ACCcalc(data_low_vision, ps, rt, err,
+#' @examples data_low_vision_ACC <- accIndex(data_low_vision, ps, rt, err,
 #' @examples                                subject, polarity)
 #'
 #' @examples # inspect the structure of the newly created dataframe
@@ -66,7 +68,7 @@
 #' @import dplyr
 #'
 #' @export
-ACCcalc <- function(data, print_size, reading_time, errors, ... = NULL) {
+accIndex <- function(data, print_size, reading_time, errors, ... = NULL) {
   # This function calculates the Reading Accessibility Index and returns it in a new dataframe.
   # It calls the acc_algo() function that contains the actual code calculation
   # and uses the non-corrected print size to make the calculation
@@ -189,5 +191,6 @@ acc_algo <- function(df, pSize, rTime, eRror, rSpeed) {
   return(ACC)
 
 }
+
 
 

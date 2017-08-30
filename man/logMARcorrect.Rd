@@ -9,7 +9,7 @@ logMARcorrect(data, print_size, viewing_distance)
 \arguments{
 \item{data}{The name of your dataframe}
 
-\item{print_size}{The variable that contains print size values}
+\item{print_size}{The variable that contains print size values (print size uncorrected for viewing distance)}
 
 \item{viewing_distance}{The variable that contains the viewing distance value used for testing}
 }

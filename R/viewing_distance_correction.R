@@ -9,7 +9,7 @@
 #' This function allows to correct the print size accordingly to the viewing distance used for testing.
 #'
 #' @param data The name of your dataframe
-#' @param print_size The variable that contains print size values
+#' @param print_size The variable that contains print size values (print size uncorrected for viewing distance)
 #' @param viewing_distance The variable that contains the viewing distance value used for testing
 #'
 #' @return The function returns the original dataframe with an added variable called "correct_ps" that contains corrected print size values (in logMAR).

@@ -7,7 +7,7 @@
 #' This function measures Reading Acuity to the nearest 0.1 logMAR, while performing print size correction for non-standard testing viewing distance.
 #'
 #' @param data The name of your dataframe
-#' @param print_size The variable that contains print size values for each sentence
+#' @param print_size The variable that contains print size values for each sentence (print size uncorrected for viewing distance)
 #' @param viewing_distance The variable that contains the viewing distance value used for testing
 #' @param reading_time The variable that contains the reading time for each sentence
 #' @param errors The variable that contains the number of errors for each sentence
@@ -18,9 +18,12 @@
 #' @seealso
 #' \code{\link{mnreadParam}} for all MNREAD parameters estimation
 #'
-#' \code{\link{curveParam}} for Maximum Reading Speed and Critical Print Size estimation
+#' \code{\link{curveParam_RT}} for MRS and CPS estimation using values of reading time (instead of reading speed)
 #'
-#' \code{\link{ACCcalc}} for Reading Accessibility Index calculation
+#' \code{\link{curveParam_RS}} for MRS and CPS estimation using values of reading speed (instead of reading time)
+#'
+#' \code{\link{accIndex}} for Reading Accessibility Index calculation
+#'
 #'
 #' @examples # inspect the structure of the dataframe
 #' @examples head(data_low_vision, 10)

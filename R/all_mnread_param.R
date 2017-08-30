@@ -8,12 +8,12 @@
 #'   \item Maximum Reading Speed (MRS)
 #'   \item Critical Print Size (CPS)
 #'   \item Reading Acuity (RA)
-#'   \item Reading Accessibility Index (ACC)
+#'   \item Reading ACCessibility Index (ACC)
 #'   }
 #' while performing print size correction for non-standard testing viewing distance.
 #'
 #' @param data The name of your dataframe
-#' @param print_size The variable that contains print size values for each sentence
+#' @param print_size The variable that contains print size values for each sentence (print size uncorrected for viewing distance)
 #' @param viewing_distance The variable that contains the viewing distance value used for testing
 #' @param reading_time The variable that contains the reading time for each sentence
 #' @param errors The variable that contains the number of errors for each sentence
@@ -37,8 +37,11 @@
 #'
 #' For more details on the parameters estimation, see  \url{http://legge.psych.umn.edu/mnread-acuity-charts}
 #'
-#' For more details on the original algorithm, see Chapter 5 of this book: Legge, G.E. (2007). Psychophysics of Reading in Normal and Low Vision. Mahwah, NJ & London: Lawrence Erlbaum Associates. ISBN 0-8058-4328-0
-#'  \url{https://books.google.fr/books/about/Psychophysics_of_Reading_in_Normal_and_L.html?id=BGTHS8zANiUC&redir_esc=y}
+#' For more details on the original algorithm, see Chapter 5 of this book:\\
+#' Legge, G.E. (2007). Psychophysics of Reading in Normal and Low Vision. Mahwah, NJ & London: Lawrence Erlbaum Associates. ISBN 0-8058-4328-0
+#' \url{https://books.google.fr/books/about/Psychophysics_of_Reading_in_Normal_and_L.html?id=BGTHS8zANiUC&redir_esc=y}
+#'
+#' To ensure proper estimation of the MRS and CPS, individual MNREAD curves should be plotted and inspected visually.
 #'
 #'
 #' @section Warning:
@@ -58,19 +61,21 @@
 #'
 #' To ensure proper ACC calculation, the data needs to be entered along certain rules:
 #'  \itemize{
-#'   \item For the smallest print size that is presented but not read, right before the test is stopped: \strong{rt = NA, err = 10}
-#'   \item For all the small sentences that are not presented because the test was stopped before them: \strong{rt = NA, err = NA}
-#'   \item If a sentence is presented, and read, but the time was not recorded by the experimenter: \strong{rt = NA, err = actual number of errors} (cf. s5-regular in low vision data sample)
-#'   \item If a large sentence was skipped to save time but would have been read well: \strong{rt = NA, err = NA} (cf. s1-regular in normal vision data sample)
-#'   \item If a large sentence was skipped to save time because the subject cannot read large print: \strong{rt = NA, err = 10} (cf. s7 in low vision data sample)
+#'   \item For the smallest print size that is presented but not read, right before the test is stopped:\\ \strong{rt = NA, err = 10}
+#'   \item For all the small sentences that are not presented because the test was stopped before them:\\ \strong{rt = NA, err = NA}
+#'   \item If a sentence is presented, and read, but the time was not recorded by the experimenter:\\ \strong{rt = NA, err = actual number of errors} (cf. s5-regular in low vision data sample)
+#'   \item If a large sentence was skipped to save time but would have been read well:\\ \strong{rt = NA, err = NA} (cf. s1-regular in normal vision data sample)
+#'   \item If a large sentence was skipped to save time because the subject cannot read large print:\\ \strong{rt = NA, err = 10} (cf. s7 in low vision data sample)
 #'   }
 #'
 #' @seealso
-#' \code{\link{curveParam}} for Maximum Reading Speed and Critical Print Size estimation
+#'  \code{\link{curveParam_RT}} for MRS and CPS estimation using values of reading time (instead of reading speed)
+#'
+#'  \code{\link{curveParam_RS}} for MRS and CPS estimation using values of reading speed (instead of reading time)
 #'
 #' \code{\link{readingAcuity}} for Reading Acuity calculation
 #'
-#' \code{\link{ACCcalc}} for Reading Accessibility Index calculation
+#' \code{\link{accIndex}} for Reading Accessibility Index calculation
 #'
 #'
 #' @examples # inspect the structure of the dataframe

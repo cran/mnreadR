@@ -11,7 +11,7 @@
 #'   \item{subject}{subject ID code}
 #'   \item{polarity}{test polarity used (regular or reverse)}
 #'   \item{vd}{viewing distance in cm}
-#'   \item{ps}{print size in logMAR, as written on the chart}
+#'   \item{ps}{print size in logMAR, as written on the chart (print size uncorrected for viewing distance)}
 #'   \item{rt}{reading time in seconds}
 #'   \item{err}{number of errors}
 #'   ...
