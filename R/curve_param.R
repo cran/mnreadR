@@ -38,7 +38,7 @@
 #' To ensure proper estimation of the MRS and CPS, individual MNREAD curves should be plotted and inspected visually.
 #'
 #' @section Warning:
-#' To run the function properly, one needs to make sure that the variables are of the class:
+#' For the function to run properly, one needs to make sure that the variables are of the class:
 #'  \itemize{
 #'   \item \strong{print_size} -> numeric
 #'   \item \strong{viewing_distance} -> integer
@@ -135,6 +135,10 @@ curveParam_RT <- function(data, print_size, viewing_distance, reading_time, erro
         mutate (nb_row = n()) %>%
         do (mansfield_algo(., .$correct_ps, .$nb_row, .$log_rs))  )
   }
+}
+
+curveParam <- function(data, print_size, viewing_distance, reading_time, errors, ... = NULL) {
+  .Deprecated("curveParam_RT")
 }
 
 

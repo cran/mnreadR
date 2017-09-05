@@ -36,11 +36,11 @@ For more details on the Reading Accessibility Index, see \url{http://archopht.ja
 
 To ensure that missing data are handled properly and that ACC calculation is correct, data need to be entered along certain rules:
  \itemize{
-  \item For the smallest print size that is presented but not read, right before the test is stopped:\\ \strong{rt = NA, err = 10}
-  \item For all the small sentences that are not presented because the test was stopped before them:\\ \strong{rt = NA, err = NA}
-  \item If a sentence is presented, and read, but the time was not recorded by the experimenter:\\ \strong{rt = NA, err = actual number of errors} (cf. s5-regular in low vision data sample)
-  \item If a large sentence was skipped to save time but would have been read well:\\ \strong{rt = NA, err = NA} (cf. s1-regular in normal vision data sample)
-  \item If a large sentence was skipped to save time because the subject cannot read large print:\\ \strong{rt = NA, err = 10} (cf. s7 in low vision data sample)
+  \item For the smallest print size that is presented but not read, right before the test is stopped: \strong{reading_time = NA, errors = 10}
+  \item For all the small sentences that are not presented because the test was stopped before them: \strong{reading_time = NA, errors = NA}
+  \item If a sentence is presented, and read, but the time was not recorded by the experimenter: \strong{reading_time = NA, errors = actual number of errors} (cf. s5-regular in low vision data sample)
+  \item If a large sentence was skipped to save time but would have been read well: \strong{reading_time = NA, errors = NA} (cf. s1-regular in normal vision data sample)
+  \item If a large sentence was skipped to save time because the subject cannot read large print: \strong{reading_time = NA, errors = 10} (cf. s7 in low vision data sample)
   }
 }
 

@@ -45,7 +45,7 @@
 #'
 #'
 #' @section Warning:
-#' To run the function properly, one needs to make sure that the variables are of the class:
+#' For the function to run properly, one needs to make sure that the variables are of the class:
 #'  \itemize{
 #'   \item \strong{print_size} -> numeric
 #'   \item \strong{viewing_distance} -> integer
@@ -61,11 +61,11 @@
 #'
 #' To ensure proper ACC calculation, the data needs to be entered along certain rules:
 #'  \itemize{
-#'   \item For the smallest print size that is presented but not read, right before the test is stopped:\\ \strong{rt = NA, err = 10}
-#'   \item For all the small sentences that are not presented because the test was stopped before them:\\ \strong{rt = NA, err = NA}
-#'   \item If a sentence is presented, and read, but the time was not recorded by the experimenter:\\ \strong{rt = NA, err = actual number of errors} (cf. s5-regular in low vision data sample)
-#'   \item If a large sentence was skipped to save time but would have been read well:\\ \strong{rt = NA, err = NA} (cf. s1-regular in normal vision data sample)
-#'   \item If a large sentence was skipped to save time because the subject cannot read large print:\\ \strong{rt = NA, err = 10} (cf. s7 in low vision data sample)
+#'   \item For the smallest print size that is presented but not read, right before the test is stopped: \strong{reading_time = NA, errors = 10}
+#'   \item For all the small sentences that are not presented because the test was stopped before them: \strong{reading_time = NA, errors = NA}
+#'   \item If a sentence is presented, and read, but the time was not recorded by the experimenter: \strong{reading_time = NA, errors = actual number of errors} (cf. s5-regular in low vision data sample)
+#'   \item If a large sentence was skipped to save time but would have been read well: \strong{reading_time = NA, errors = NA} (cf. s1-regular in normal vision data sample)
+#'   \item If a large sentence was skipped to save time because the subject cannot read large print: \strong{reading_time = NA, errors = 10} (cf. s7 in low vision data sample)
 #'   }
 #'
 #' @seealso
@@ -169,8 +169,9 @@ mnreadParam <- function(data, print_size, viewing_distance, reading_time, errors
       temp_df2 %>%
         do (ACC = acc_algo(., .$p_size, .$r_time, .$error_nb, .$rs))  )
 
-    cbind(RAdf, MRS_CPSdf, ACCdf)
-    # left_join(RAdf, MRS_CPSdf)
+    # create one single df with all 4 parameters
+    all_param <- cbind(RAdf, MRS_CPSdf, ACCdf)
+    
   }
 
   # with grouping argument(s)
@@ -200,8 +201,9 @@ mnreadParam <- function(data, print_size, viewing_distance, reading_time, errors
         group_by (!!!grouping_var) %>%
         do (ACC = acc_algo(., .$p_size, .$r_time, .$error_nb, .$rs))  )
 
+    # create one single df with all 4 parameters
     join_temp <- left_join(RAdf, MRS_CPSdf)
-    left_join(join_temp, ACCdf)
+    all_param <- left_join(join_temp, ACCdf)
 
   }
 }

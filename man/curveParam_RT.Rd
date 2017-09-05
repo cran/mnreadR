@@ -53,7 +53,7 @@ To ensure proper estimation of the MRS and CPS, individual MNREAD curves should 
 
 \section{Warning}{
 
-To run the function properly, one needs to make sure that the variables are of the class:
+For the function to run properly, one needs to make sure that the variables are of the class:
  \itemize{
   \item \strong{print_size} -> numeric
   \item \strong{viewing_distance} -> integer
