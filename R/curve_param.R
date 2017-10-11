@@ -95,6 +95,11 @@ curveParam_RT <- function(data, print_size, viewing_distance, reading_time, erro
   # It calls the mansfield_algo() function that contains the actual estimation
   # It takes as many grouping arguments as needed :-)
 
+  # warning('Remember to check the accuracy of MRS and CPS estimates by inspecting the MNREAD curve with mnreadCurve()',
+  #         call. = FALSE, immediate. = FALSE)
+  
+  message('Remember to check the accuracy of MRS and CPS estimates by inspecting the MNREAD curve with mnreadCurve()')
+  
   print_size <- enquo(print_size)
   viewing_distance <- enquo(viewing_distance)
   reading_time <- enquo(reading_time)
@@ -239,6 +244,8 @@ curveParam_RS <- function(data, print_size, viewing_distance, reading_speed, ...
   # It calls the mansfield_algo() function that contains the actual estimation
   # It takes as many grouping arguments as needed :-)
 
+  message('Remember to check the accuracy of MRS and CPS estimates by inspecting the MNREAD curve with mnreadCurve()')
+  
   print_size <- enquo(print_size)
   viewing_distance <- enquo(viewing_distance)
   reading_speed <- enquo(reading_speed)

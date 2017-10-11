@@ -107,8 +107,10 @@
 #'
 #' @export
 mnreadParam <- function(data, print_size, viewing_distance, reading_time, errors, ... = NULL) {
-  # This function estimates the Reading Acuity (RA), MRS and CPS and returns them in a new dataframe.
+  # This function estimates the RA, MRS and CPS and returns them in a new dataframe.
 
+  message('Remember to check the accuracy of MRS and CPS estimates by inspecting the MNREAD curve with mnreadCurve()')
+  
   print_size <- enquo(print_size)
   viewing_distance <- enquo(viewing_distance)
   reading_time <- enquo(reading_time)
@@ -167,7 +169,7 @@ mnreadParam <- function(data, print_size, viewing_distance, reading_time, errors
     # calculate reading accessibility index
     ACCdf <- as.data.frame(
       temp_df2 %>%
-        do (ACC = acc_algo(., .$p_size, .$r_time, .$error_nb, .$rs))  )
+        do (acc_algo(.))  )
 
     # create one single df with all 4 parameters
     all_param <- cbind(RAdf, MRS_CPSdf, ACCdf)
@@ -199,7 +201,7 @@ mnreadParam <- function(data, print_size, viewing_distance, reading_time, errors
     ACCdf <- as.data.frame(
       temp_df2 %>%
         group_by (!!!grouping_var) %>%
-        do (ACC = acc_algo(., .$p_size, .$r_time, .$error_nb, .$rs))  )
+        do (acc_algo(.))  )
 
     # create one single df with all 4 parameters
     join_temp <- left_join(RAdf, MRS_CPSdf)

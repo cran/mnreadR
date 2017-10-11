@@ -93,11 +93,11 @@ mansfield_algo <- function(df, logmar, nb_row, logRS) {
     # if CPS was estimated properly, MRS is defined accordingly
     if (is.na(fastest_cps) == FALSE) {
       CPS <- fastest_cps
-      mrs = as.numeric(
+      MRS = as.numeric(
         df %>%
           filter (logmar > fastest_cps) %>%
-          summarise (mean(rs)))
-      MRS = round(mrs, 2)  }
+          summarise (mean(rs))) }
+      # MRS = round(mrs, 2)  
 
     return(as.data.frame(cbind(CPS, MRS)))
   }

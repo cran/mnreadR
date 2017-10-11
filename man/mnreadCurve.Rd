@@ -24,6 +24,7 @@ mnreadCurve(data, print_size, viewing_distance, reading_time, errors,
 The function returns a plot of reading speed (in words/min) as a function of print size (in logMAR). 
 Reading Acuity is marked as a triangle, Maximum Reading Speed and Critical Print Size are shown with dashed lines. 
 When using two grouping arguments, a colored diamond is added for clarification.
+Highlighted data points represent the range of print sizes included in the Reading Accessibility Index calculation.
 }
 \description{
 This function plots individual MNREAD curves, while showing the estimated MNREAD parameters:
@@ -71,24 +72,26 @@ data_s1_reg <- data_low_vision \%>\%
    filter (subject == "s1", polarity == "regular")
 
 # plot the MNREAD curve 
-mnreadCurve(data_s1_reg, ps, vd, rt, err)
+\dontrun{ mnreadCurve(data_s1_reg, ps, vd, rt, err)  }
 
 #------
 
-# restrict dataset to one subject (s1) for which there are two MNREAD tests
+# restrict dataset to one subject (s1) and plot the MNREAD curves using ONE GROUPING ARGUMENT 
+# (ie. polarity) 
 data_s1 <- data_low_vision \%>\%
    filter (subject == "s1")
 
 # plot the MNREAD curve using ONE GROUPING ARGUMENT (ie. polarity)
-mnreadCurve(data_s1, ps, vd, rt, err, 
-            polarity)
+ \dontrun{ mnreadCurve(data_s1, ps, vd, rt, err, polarity)  }
 
 #------
 
-# plot the MNREAD curve on the whole dataset using TWO GROUPING ARGUMENTS 
+# restrict dataset to two subject (s1 & s2) and plot the MNREAD curves using TWO GROUPING ARGUMENTS 
 # (ie. subject and polarity) 
-mnreadCurve(data_low_vision, ps, vd, rt, err,
-            subject, polarity)
+data_s2 <- data_low_vision \%>\%
+   filter (subject == "s1" | subject == "s2")
+
+ \dontrun{ mnreadCurve(data_s2, ps, vd, rt, err, subject, polarity)  }
 
 #------
 

@@ -1,7 +1,7 @@
 Package: mnreadR
 Type: Package
 Title: MNREAD Parameters Estimation and Curve Plotting
-Version: 1.1.0
+Version: 1.2.0
 Authors@R: c(
     person("Aurélie", "Calabrèse", email = "acalabre@umn.edu", role = c("aut", "cre")),
     person("J. Steve", "Mansfield", email = "steve.mansfield@plattsburgh.edu", role = "aut"),
@@ -21,10 +21,10 @@ Encoding: UTF-8
 LazyData: true
 RoxygenNote: 6.0.1
 NeedsCompilation: no
-Packaged: 2017-09-05 09:05:08 UTC; Aurelie
+Packaged: 2017-10-11 02:13:34 UTC; Aurelie
 Author: Aurélie Calabrèse [aut, cre],
   J. Steve Mansfield [aut],
   Gordon E. Legge [aut]
 Maintainer: Aurélie Calabrèse <acalabre@umn.edu>
 Repository: CRAN
-Date/Publication: 2017-09-05 10:30:36 UTC
+Date/Publication: 2017-10-11 03:27:24 UTC

@@ -21,6 +21,7 @@
 #' The function returns a plot of reading speed (in words/min) as a function of print size (in logMAR). 
 #' Reading Acuity is marked as a triangle, Maximum Reading Speed and Critical Print Size are shown with dashed lines. 
 #' When using two grouping arguments, a colored diamond is added for clarification.
+#' Highlighted data points represent the range of print sizes included in the Reading Accessibility Index calculation.
 #'
 #' @section Notes:
 #' This function can take no more that two grouping arguments. 
@@ -64,25 +65,27 @@
 #' @examples    filter (subject == "s1", polarity == "regular")
 #'
 #' @examples # plot the MNREAD curve 
-#' @examples mnreadCurve(data_s1_reg, ps, vd, rt, err)
+#' @examples \dontrun{ mnreadCurve(data_s1_reg, ps, vd, rt, err)  }
 #' 
 #' #------
 #'
-#' @examples # restrict dataset to one subject (s1) for which there are two MNREAD tests
+#' @examples # restrict dataset to one subject (s1) and plot the MNREAD curves using ONE GROUPING ARGUMENT 
+#' @examples # (ie. polarity) 
 #' @examples data_s1 <- data_low_vision %>%
 #' @examples    filter (subject == "s1")
 #'
 #' @examples # plot the MNREAD curve using ONE GROUPING ARGUMENT (ie. polarity)
-#' @examples mnreadCurve(data_s1, ps, vd, rt, err, 
-#' @examples             polarity)
+#' @examples  \dontrun{ mnreadCurve(data_s1, ps, vd, rt, err, polarity)  }
 #'
 #' #------
 #'
-#' @examples # plot the MNREAD curve on the whole dataset using TWO GROUPING ARGUMENTS 
+#' @examples # restrict dataset to two subject (s1 & s2) and plot the MNREAD curves using TWO GROUPING ARGUMENTS 
 #' @examples # (ie. subject and polarity) 
-#' @examples mnreadCurve(data_low_vision, ps, vd, rt, err,
-#' @examples             subject, polarity)
-#'
+#' @examples data_s2 <- data_low_vision %>%
+#' @examples    filter (subject == "s1" | subject == "s2")
+#' 
+#' @examples  \dontrun{ mnreadCurve(data_s2, ps, vd, rt, err, subject, polarity)  }
+#' 
 #' #------
 #'
 #' @examples # Once created, the MNREAD curve can be customized as needed using ggplot2, 
@@ -182,6 +185,10 @@ mnreadCurve <- function(data, print_size, viewing_distance, reading_time, errors
     p <- p + geom_point(aes_(x = quote(RA), y = 0),
                         shape = 25, size = 2, fill = "black", 
                         data = RAdf)
+    # add ACC range
+    p <- p + geom_point(aes_(),
+                        size = 3,  alpha=.3,
+                        data = temp_df1 %>% filter ((!!print_size) %in% seq (1.3, 0.4, by = sign(0.4-1.3) * 0.1)) )
 
   }
   
@@ -215,6 +222,11 @@ mnreadCurve <- function(data, print_size, viewing_distance, reading_time, errors
       p <- p + geom_point(aes_(x = quote(RA), y = 0),
                           shape = 25, fill = "black", size = 2,
                           data = RAdf)
+      # add ACC range
+      p <- p + geom_point(aes_(),
+                          size = 3,  alpha=.3,
+                          data = temp_df1 %>% filter ((!!print_size) %in% seq (1.3, 0.4, by = sign(0.4-1.3) * 0.1)) )
+      
     }
     
     if ( length(grouping_var) == 2 )  {
@@ -229,6 +241,11 @@ mnreadCurve <- function(data, print_size, viewing_distance, reading_time, errors
       p <- p + geom_point(aes_(x = quote(RA), y = 0, fill = (grouping_var)[[2]]),
                           shape = 25, size = 2,
                           data = RAdf)
+      # add ACC range
+      p <- p + geom_point(aes_(colour = (grouping_var)[[2]]),
+                          size = 3,  alpha=.3,
+                          data = temp_df1 %>% filter ((!!print_size) %in% seq (1.3, 0.4, by = sign(0.4-1.3) * 0.1)) )
+      
       }
     
     }

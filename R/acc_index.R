@@ -96,101 +96,97 @@ accIndex <- function(data, print_size, reading_time, errors, ... = NULL) {
       mutate (r_time = (!!reading_time)) %>%
       mutate (error_nb = (!!errors)) %>%
       mutate (p_size = (!!print_size)) %>%
-      filter ( p_size >= 0.4 & p_size <= 1.3 )
+      filter (p_size >= 0.4 & p_size <= 1.3 )
   )
 
   # estimates ACC with no grouping argument
   if ( missing(...) )  {
-    as.data.frame(
+    ACCdf <- as.data.frame(
       temp_df %>%
-        do (ACC = acc_algo(., .$p_size, .$r_time, .$error_nb, .$rs))  )
+        do (acc_algo(.))  )
   }
 
   # estimates ACC with grouping argument(s)
   else {
     grouping_var <- quos(...)
-    as.data.frame(
+    ACCdf <- as.data.frame(
       temp_df %>%
         group_by (!!!grouping_var) %>%
-        do (ACC = acc_algo(., .$p_size, .$r_time, .$error_nb, .$rs))  )
+        do (acc_algo(.))  )
   }
 
 }
 
-acc_algo <- function(df, pSize, rTime, eRror, rSpeed) {
+acc_algo <- function(df) {
 
   ACC <- NULL
 
-  # In case data are not entered for small non-read sentences,
+  # In case data are not entered for all sentences in the ACC calculation range
   # I need to fill the dataframe with print size down to 0.4 logMAR
-  if (0.4 %in% pSize == FALSE) {
-    ps = seq (1.3, 0.4, by = sign(0.4-1.3) * 0.1)
-    fullACCps <- as.data.frame( ps ) # generates adecreasing sequence from 1.3 to 0.4
-    df <- right_join(df, fullACCps) # adds rows down to 0.4 logMAR and fills the with NAs
-  }
-
+  ps = seq (1.3, 0.4, by = sign(0.4-1.3) * 0.1) # generates a decreasing sequence from 1.3 to 0.4
+  df <- right_join(df, as.data.frame(ps), by = "ps") # adds rows for missing print sizes and fills them with NAs
+  # df <- df %>% mutate (id = unique(na.omit(df$id))) # fill in the id value for added rows
+  
   # I estimate the ACC assuming that Reading Speed has no missing values
   #   If there are no missing values, the ACC will compute OK
   #   If there are some missing values, the ACC will be set to NA
-  ACC <- as.numeric(
+  ACC <- as.data.frame (
     df %>%
-      summarize (ACC = mean (rSpeed) / 200))
-  ACC <- round( ACC, 2)
+      summarize (ACC = mean (df$rs) / 200) )
 
   # If ACC was set to NA, it means that Reading Speed contains some missing values
   # Here I set rules to deal with these missing values
-
   if (is.na(ACC) == TRUE) {
-
+    
     # for the last row of the temp_df only (ps = 0.4)
     for (i in nrow(df)) {
-      if (is.na(rSpeed[i] == TRUE)) {
-        if (is.na(rTime[i]) == TRUE && is.na(eRror[i]) == TRUE) {
-          rSpeed[i] = 0}
-        if (is.na(rTime[i]) == TRUE && is.na(eRror[i]) == FALSE && eRror[i] %in% 10) {
-          rSpeed[i] = 0}
-        if (is.na(rTime[i]) == TRUE && is.na(eRror[i]) == FALSE && eRror[i] < 10 && is.na(rTime[i-1]) == FALSE) {
-          rSpeed[i] = rSpeed[i-1]}
-      }
+      if (is.na(df$rs[i]) == TRUE) {
+        if (is.na(df$r_time[i]) == TRUE && is.na(df$error_nb[i]) == TRUE) {
+          df$rs[i] = 0}
+        if (is.na(df$r_time[i]) == TRUE && is.na(df$error_nb[i]) == FALSE && df$error_nb[i] %in% 10) {
+          df$rs[i] = 0}
+        if (is.na(df$r_time[i]) == TRUE && is.na(df$error_nb[i]) == FALSE && df$error_nb[i] < 10 && is.na(df$r_time[i-1]) == FALSE) {
+          df$rs[i] = df$rs[i-1]}
+        }
     }
-
+  
     # for rows 2 to 9 of the temp_df only (ps = 0.5 to 1.2)
     for (i in (nrow(df)-1):2) {
-      if (is.na(rSpeed[i] == TRUE)) {
-        if (is.na(rTime[i]) == TRUE && is.na(eRror[i]) == TRUE) {
-          rSpeed[i] = 0}
-        if (is.na(rTime[i]) == TRUE && is.na(eRror[i]) == FALSE && eRror[i] %in% 10) {
-          rSpeed[i] = 0}
-        if (is.na(rTime[i]) == TRUE && is.na(eRror[i]) == FALSE && eRror[i] < 10 && is.na(rTime[i-1]) == FALSE) {
-          rSpeed[i] = mean(c(rSpeed[i-1], rSpeed[i+1]))}
-        if (is.na(rTime[i]) == TRUE && is.na(eRror[i]) == FALSE && eRror[i] < 10 && is.na(rTime[i-1]) == TRUE) {
-          rSpeed[i] = mean(c(rSpeed[i-2], rSpeed[i+1]))}
+      if (is.na(df$rs[i] == TRUE)) {
+        if (is.na(df$r_time[i]) == TRUE && is.na(df$error_nb[i]) == TRUE) {
+          df$rs[i] = 0}
+        if (is.na(df$r_time[i]) == TRUE && is.na(df$error_nb[i]) == FALSE && df$error_nb[i] %in% 10) {
+          df$rs[i] = 0}
+        if (is.na(df$r_time[i]) == TRUE && is.na(df$error_nb[i]) == FALSE && df$error_nb[i] < 10 && is.na(df$r_time[i-1]) == FALSE) {
+          df$rs[i] = mean(c(df$rs[i-1], df$rs[i+1]))}
+        if (is.na(df$r_time[i]) == TRUE && is.na(df$error_nb[i]) == FALSE && df$error_nb[i] < 10 && is.na(df$r_time[i-1]) == TRUE) {
+          df$rs[i] = mean(c(df$rs[i-2], df$rs[i+1]))}
       }
     }
 
     # for the first row of the temp_df only (ps = 1.3)
-    for (i in 1) {
-      if (is.na(rSpeed[i] == TRUE)) {
-        if (is.na(rTime[i]) == TRUE && is.na(eRror[i]) == TRUE) {
-          rSpeed[i] = rSpeed[i+1]}
-        if (is.na(rTime[i]) == TRUE && is.na(eRror[i]) == FALSE && eRror[i] < 10) {
-          rSpeed[i] = rSpeed[i+1]}
-        if (is.na(rTime[i]) == TRUE && is.na(eRror[i]) == FALSE && eRror[i] %in% 10) {
-          rSpeed[i] = 0}
+    for (i in 1:1) {
+      if (is.na(df$rs[i] == TRUE)) {
+        if (is.na(df$r_time[i]) == TRUE && is.na(df$error_nb[i]) == TRUE) {
+          df$rs[i] = df$rs[i+1]}
+        if (is.na(df$r_time[i]) == TRUE && is.na(df$error_nb[i]) == FALSE && df$error_nb[i] < 10) {
+          df$rs[i] = df$rs[i+1]}
+        if (is.na(df$r_time[i]) == TRUE && is.na(df$error_nb[i]) == FALSE && df$error_nb[i] %in% 10) {
+          df$rs[i] = 0}
       }
     }
 
   }
-
+ 
   # I calculate the ACC again now that I have assign a value to each missing reading speed
-  ACC <- as.numeric(
+  ACC <- as.data.frame(
     df %>%
-      summarize (ACC = mean (rSpeed) / 200))
-  ACC <- round( ACC, 2)
-
+      summarize (ACC = mean (df$rs) / 200) )
+  
   return(ACC)
-
-}
+  
+  }
+  
 
 ACCcalc <- function(data, print_size, reading_time, errors, ... = NULL) {
   .Deprecated("accIndex")
