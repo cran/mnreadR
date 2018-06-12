@@ -2,7 +2,8 @@
 % Please edit documentation in R/curve_param.R
 \name{curveParam_RT}
 \alias{curveParam_RT}
-\title{Maximum Reading Speed (MRS) and Critical Print Size (CPS) estimation using raw data of reading time and number of errors.}
+\title{Standard estimation of Maximum Reading Speed (MRS) and Critical Print Size (CPS) 
+using individual data of reading time and number of errors.}
 \usage{
 curveParam_RT(data, print_size, viewing_distance, reading_time, errors,
   ... = NULL)
@@ -48,7 +49,7 @@ For more details on the original algorithm, see Chapter 5 of this book:\\
 Legge, G.E. (2007). Psychophysics of Reading in Normal and Low Vision. Mahwah, NJ & London: Lawrence Erlbaum Associates. ISBN 0-8058-4328-0
 \url{https://books.google.fr/books/about/Psychophysics_of_Reading_in_Normal_and_L.html?id=BGTHS8zANiUC&redir_esc=y}
 
-To ensure proper estimation of the MRS and CPS, individual MNREAD curves should be plotted and inspected visually.
+To ensure proper estimation of the MRS and CPS, individual MNREAD curves should be plotted using \code{\link{mnreadCurve}} and inspected visually.
 }
 
 \section{Warning}{
@@ -95,9 +96,11 @@ head(data_low_vision_MRS_CPS, 10)
 
 }
 \seealso{
-\code{\link{curveParam_RS}} for MRS and CPS estimation using values of reading speed (instead of reading time)
+\code{\link{curveParam_RS}} for standard MRS and CPS estimation using values of reading speed (instead of reading time)
 
- \code{\link{mnreadParam}} for all MNREAD parameters estimation
+ \code{\link{nlmeParam}} for MRS and CPS estimation using nonlinear mixed-effect (NLME) modeling
+
+ \code{\link{mnreadParam}} for all MNREAD parameters estimation (using standard calculation)
 
  \code{\link{readingAcuity}} for Reading Acuity calculation
 

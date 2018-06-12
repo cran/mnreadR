@@ -1,7 +1,7 @@
 #----- mnreadParam ------
 #######################--
 
-#' MNREAD parameters' estimation
+#' Standard MNREAD parameters' estimation
 #'
 #' This function calculates simultaneously all four MNREAD parameters:
 #'  \itemize{
@@ -41,7 +41,7 @@
 #' Legge, G.E. (2007). Psychophysics of Reading in Normal and Low Vision. Mahwah, NJ & London: Lawrence Erlbaum Associates. ISBN 0-8058-4328-0
 #' \url{https://books.google.fr/books/about/Psychophysics_of_Reading_in_Normal_and_L.html?id=BGTHS8zANiUC&redir_esc=y}
 #'
-#' To ensure proper estimation of the MRS and CPS, individual MNREAD curves should be plotted and inspected visually.
+#' To ensure proper estimation of the MRS and CPS, individual MNREAD curves should be plotted using \code{\link{mnreadCurve}} and inspected visually.
 #'
 #'
 #' @section Warning:
@@ -69,13 +69,15 @@
 #'   }
 #'
 #' @seealso
-#'  \code{\link{curveParam_RT}} for MRS and CPS estimation using values of reading time (instead of reading speed)
+#'  \code{\link{curveParam_RT}} for standard MRS and CPS estimation using values of reading time (instead of reading speed)
 #'
-#'  \code{\link{curveParam_RS}} for MRS and CPS estimation using values of reading speed (instead of reading time)
+#'  \code{\link{curveParam_RS}} for standard MRS and CPS estimation using values of reading speed (instead of reading time)
 #'
-#' \code{\link{readingAcuity}} for Reading Acuity calculation
+#'  \code{\link{nlmeParam}} for MRS and CPS estimation using a nonlinear mixed-effect model (NLME)
 #'
-#' \code{\link{accIndex}} for Reading Accessibility Index calculation
+#'  \code{\link{readingAcuity}} for Reading Acuity calculation
+#'
+#'  \code{\link{accIndex}} for Reading Accessibility Index calculation
 #'
 #'
 #' @examples # inspect the structure of the dataframe

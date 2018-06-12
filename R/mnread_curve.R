@@ -1,7 +1,7 @@
 #----- mnreadCurve ------
 #######################--
 
-#' MNREAD curve plotting
+#' MNREAD curve plotting.
 #'
 #' This function plots individual MNREAD curves, while showing the estimated MNREAD parameters:
 #'  \itemize{
@@ -24,7 +24,7 @@
 #' Highlighted data points represent the range of print sizes included in the Reading Accessibility Index calculation.
 #'
 #' @section Notes:
-#' This function can take no more that two grouping arguments. 
+#' This function can't take more that two grouping arguments. 
 #' The first grouping argument is used to draw sub-plots (using facet_wrap from ggplot2). 
 #' The second grouping argument is color-coded.
 #' 
@@ -49,69 +49,70 @@
 #'
 #'
 #' @seealso
-#' \code{\link{curveParam_RT}} for MRS and CPS estimation using values of reading time (instead of reading speed)
+#' \code{\link{curveParam_RT}} for standard estimation of MRS and CPS using values of reading time (instead of reading speed)
 #'
 #' \code{\link{readingAcuity}} for Reading Acuity calculation
 #'
 #'
 #'
-#' @examples # inspect the structure of the dataframe
-#' @examples head(data_low_vision, 10)
+#' @examples 
+#' # inspect the structure of the dataframe
+#' head(data_low_vision, 10)
 #'
 #' #------
 #'
-#' @examples # restrict dataset to one MNREAD test only (subject s1, regular polarity)
-#' @examples data_s1_reg <- data_low_vision %>%
-#' @examples    filter (subject == "s1", polarity == "regular")
+#' # restrict dataset to one MNREAD test only (subject s1, regular polarity)
+#' data_s1_reg <- data_low_vision %>%
+#'    filter (subject == "s1", polarity == "regular")
 #'
-#' @examples # plot the MNREAD curve 
-#' @examples \dontrun{ mnreadCurve(data_s1_reg, ps, vd, rt, err)  }
+#' # plot the MNREAD curve 
+#' \dontrun{ mnreadCurve(data_s1_reg, ps, vd, rt, err)  }
 #' 
 #' #------
 #'
-#' @examples # restrict dataset to one subject (s1) and plot the MNREAD curves using ONE GROUPING ARGUMENT 
-#' @examples # (ie. polarity) 
-#' @examples data_s1 <- data_low_vision %>%
-#' @examples    filter (subject == "s1")
+#' # restrict dataset to one subject (s1) and plot the MNREAD curves using ONE GROUPING ARGUMENT 
+#' # (ie. polarity) 
+#' data_s1 <- data_low_vision %>%
+#'    filter (subject == "s1")
 #'
-#' @examples # plot the MNREAD curve using ONE GROUPING ARGUMENT (ie. polarity)
-#' @examples  \dontrun{ mnreadCurve(data_s1, ps, vd, rt, err, polarity)  }
+#' # plot the MNREAD curve using ONE GROUPING ARGUMENT (ie. polarity)
+#'  \dontrun{ mnreadCurve(data_s1, ps, vd, rt, err, polarity)  }
 #'
 #' #------
 #'
-#' @examples # restrict dataset to two subject (s1 & s2) and plot the MNREAD curves using TWO GROUPING ARGUMENTS 
-#' @examples # (ie. subject and polarity) 
-#' @examples data_s2 <- data_low_vision %>%
-#' @examples    filter (subject == "s1" | subject == "s2")
-#' 
-#' @examples  \dontrun{ mnreadCurve(data_s2, ps, vd, rt, err, subject, polarity)  }
+#' # restrict dataset to two subject (s1 & s2) and plot the MNREAD curves using TWO GROUPING ARGUMENTS 
+#' # (ie. subject and polarity) 
+#' data_s2 <- data_low_vision %>%
+#'    filter (subject == "s1" | subject == "s2")
+#'
+#'  \dontrun{ mnreadCurve(data_s2, ps, vd, rt, err, subject, polarity)  }
 #' 
 #' #------
 #'
-#' @examples # Once created, the MNREAD curve can be customized as needed using ggplot2, 
-#' @examples # for ex., by adding the number of errors for each sentence on top of the curve
-#' 
-#' @examples # plot the MNREAD curve 
-#' @examples my.plot <- mnreadCurve(data_s1, ps, vd, rt, err, polarity)
-#' 
-#' @examples # displays my.plot
-#' @examples print(my.plot)
-#' 
-#' @examples # calculates reading speed and perform print size correction
-#' @examples data_s1_new <- as.data.frame(
-#' @examples data_s1 %>%
-#' @examples     filter (err != "NA" & rt > 0) %>%
-#' @examples     mutate (errors10 = replace (err, err > 10, 10) ) %>%
-#' @examples     mutate (rs = 60 * (10 - errors10) / rt ) %>%
-#' @examples     mutate (correct_ps = ps + round(log10(40/(vd)), 2)) ) 
-#' 
-#' @examples # add the number of errors for each sentence 
-#' @examples my.new.plot <- my.plot + geom_text(aes(x = correct_ps, y = rs + 5, label = errors10),
-#' @examples                                    alpha = 0.5,
-#' @examples                                    data = data_s1_new %>% filter (errors10 != 0) )
-#' 
-#' @examples # displays my.new.plot                                                                        
-#' @examples print(my.new.plot)
+#' # Once created, the MNREAD curve can be customized as needed using ggplot2, 
+#' # for ex., by adding the number of errors for each sentence on top of the curve
+#'
+#' # plot the MNREAD curve 
+#' my.plot <- mnreadCurve(data_s1, ps, vd, rt, err, polarity)
+#'
+#' # displays my.plot
+#' print(my.plot)
+#'
+#' # calculates reading speed and perform print size correction
+#' data_s1_new <- as.data.frame(
+#' data_s1 %>%
+#'     filter (err != "NA" & rt > 0) %>%
+#'     mutate (errors10 = replace (err, err > 10, 10) ) %>%
+#'     mutate (rs = 60 * (10 - errors10) / rt ) %>%
+#'     mutate (correct_ps = ps + round(log10(40/(vd)), 2)) ) 
+#'
+#' # add the number of errors for each sentence 
+#' my.new.plot <- my.plot + geom_text(aes(x = correct_ps, y = rs + 5, label = errors10),
+#'                                    alpha = 0.5,
+#'                                    data = data_s1_new %>% filter (errors10 != 0) )
+#'
+#' # displays my.new.plot                                                                        
+#' print(my.new.plot)
 #' 
 #' 
 #' @importFrom stats sd
@@ -121,7 +122,7 @@
 #'
 #' @export
 mnreadCurve <- function(data, print_size, viewing_distance, reading_time, errors, ... = NULL) {
-  # This function plts the MNREAD curve. It also estimates the Reading Acuity (RA), 
+  # This function plots the MNREAD curve. It also estimates the Reading Acuity (RA), 
   # Maximum Reading Speed (MRS) and Critical Print Size (CPS) and diplays them on the plot.
   
   print_size <- enquo(print_size)

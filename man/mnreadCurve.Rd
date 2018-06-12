@@ -2,7 +2,7 @@
 % Please edit documentation in R/mnread_curve.R
 \name{mnreadCurve}
 \alias{mnreadCurve}
-\title{MNREAD curve plotting}
+\title{MNREAD curve plotting.}
 \usage{
 mnreadCurve(data, print_size, viewing_distance, reading_time, errors,
   ... = NULL)
@@ -36,7 +36,7 @@ This function plots individual MNREAD curves, while showing the estimated MNREAD
 }
 \section{Notes}{
 
-This function can take no more that two grouping arguments. 
+This function can't take more that two grouping arguments. 
 The first grouping argument is used to draw sub-plots (using facet_wrap from ggplot2). 
 The second grouping argument is color-coded.
 
@@ -123,7 +123,7 @@ print(my.new.plot)
 
 }
 \seealso{
-\code{\link{curveParam_RT}} for MRS and CPS estimation using values of reading time (instead of reading speed)
+\code{\link{curveParam_RT}} for standard estimation of MRS and CPS using values of reading time (instead of reading speed)
 
 \code{\link{readingAcuity}} for Reading Acuity calculation
 }
