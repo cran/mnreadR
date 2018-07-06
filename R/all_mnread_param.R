@@ -59,7 +59,7 @@
 #' The ACC should be used to estimate the MNREAD score in such cases
 #' where there are not enough data points to fit the MNREAD curve.
 #'
-#' To ensure proper ACC calculation, the data needs to be entered along certain rules:
+#' To ensure proper ACC calculation, the data should be entered along certain rules:
 #'  \itemize{
 #'   \item For the smallest print size that is presented but not read, right before the test is stopped: \strong{reading_time = NA, errors = 10}
 #'   \item For all the small sentences that are not presented because the test was stopped before them: \strong{reading_time = NA, errors = NA}

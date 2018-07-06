@@ -47,6 +47,14 @@
 #' MRS and CPS cannot be estimated and won't be displayed on the plot.
 #' In such cases, the Reading Accessibility Index (ACC) can be used to estimate the MNREAD score instead (cf. \code{\link{accIndex}}).
 #'
+#' To ensure proper plotting, the data should be entered along certain rules:
+#'  \itemize{
+#'   \item For the smallest print size that is presented but not read, right before the test is stopped: \strong{reading_time = NA, errors = 10}
+#'   \item For all the small sentences that are not presented because the test was stopped before them: \strong{reading_time = NA, errors = NA}
+#'   \item If a sentence is presented, and read, but the time was not recorded by the experimenter: \strong{reading_time = NA, errors = actual number of errors} (cf. s5-regular in low vision data sample)
+#'   \item If a large sentence was skipped to save time but would have been read well: \strong{reading_time = NA, errors = NA} (cf. s1-regular in normal vision data sample)
+#'   \item If a large sentence was skipped to save time because the subject cannot read large print: \strong{reading_time = NA, errors = 10} (cf. s7 in low vision data sample)
+#'   }
 #'
 #' @seealso
 #' \code{\link{curveParam_RT}} for standard estimation of MRS and CPS using values of reading time (instead of reading speed)
@@ -95,10 +103,10 @@
 #' # plot the MNREAD curve 
 #' my.plot <- mnreadCurve(data_s1, ps, vd, rt, err, polarity)
 #'
-#' # displays my.plot
+#' # display my.plot
 #' print(my.plot)
 #'
-#' # calculates reading speed and perform print size correction
+#' # calculate reading speed and perform print size correction
 #' data_s1_new <- as.data.frame(
 #' data_s1 %>%
 #'     filter (err != "NA" & rt > 0) %>%
@@ -111,8 +119,27 @@
 #'                                    alpha = 0.5,
 #'                                    data = data_s1_new %>% filter (errors10 != 0) )
 #'
-#' # displays my.new.plot                                                                        
+#' # display my.new.plot                                                                        
 #' print(my.new.plot)
+#' 
+#' #------
+#' 
+#' # MNREAD curves can also be saved in a pdf file, with each page showing a different subject
+#'  
+#' # count the number of subjects to define the number of pages
+#' num_pages = length(unique(data_s2$subject))
+#' 
+#' # create a pdf file 
+#' pdf ("MNREAD_curves.pdf", width = 10.5, height = 8, paper = "special", useDingbats = TRUE)
+#' 
+#' # wrap the plots over several pages
+#' for (i in seq(num_pages)){
+#'     p <- mnreadCurve(data_s2 %>% filter (subject == sort(unique(data_s2$subject))[i]),
+#'                      ps, vd, rt, err, subject, polarity)
+#'     print(p)
+#' }
+#' 
+#' dev.off()
 #' 
 #' 
 #' @importFrom stats sd
@@ -152,15 +179,25 @@ mnreadCurve <- function(data, print_size, viewing_distance, reading_time, errors
       mutate (correct_ps = (!!print_size) + round(log10(40/(!!viewing_distance)), 2)) %>%
       filter (correct_ps != "NA", correct_ps != "-Inf") )
 
+  # modify the raw dataframe as needed to plot the data
+  temp_df_plot <- as.data.frame(
+    data %>%
+      filter ((!!errors) != "NA" | (!!reading_time) != "NA") %>%
+      mutate (errors10 = replace ((!!errors), (!!errors) > 10, 10)) %>%
+      mutate (rs = 60 * (10 - errors10) / (!!reading_time)) %>%
+      mutate (rs = replace(rs, is.na(rs), 0)) %>%
+      mutate (correct_ps = (!!print_size) + round(log10(40/(!!viewing_distance)), 2)) %>%
+      filter (correct_ps != "NA", correct_ps != "-Inf") )
+  
   # plot the curve
-  p <- ggplot(data = temp_df1,
+  p <- ggplot(data = temp_df_plot,
               aes(x = correct_ps, y = rs))
   p <- p + scale_x_continuous(name = "Corrected Print Size (logMAR)")
   p <- p + scale_y_continuous(name = "Reading Speed (words/min)")
   # # show the number of errors
   # p <- p + geom_text(aes(x = correct_ps, y = rs + 10, label = errors10),
   #                    nudge_y = 0.5, alpha = 0.5,
-  #                    data = temp_df1 %>% filter (errors10 != 0) )
+  #                    data = temp_df_plot %>% filter (errors10 != 0) )
   
   # with no grouping argument
   if ( missing(...) )  {
@@ -189,7 +226,7 @@ mnreadCurve <- function(data, print_size, viewing_distance, reading_time, errors
     # add ACC range
     p <- p + geom_point(aes_(),
                         size = 3,  alpha=.3,
-                        data = temp_df1 %>% filter ((!!print_size) %in% seq (1.3, 0.4, by = sign(0.4-1.3) * 0.1)) )
+                        data = temp_df_plot %>% filter ((!!print_size) %in% seq (1.3, 0.4, by = sign(0.4-1.3) * 0.1)) )
 
   }
   
@@ -226,7 +263,7 @@ mnreadCurve <- function(data, print_size, viewing_distance, reading_time, errors
       # add ACC range
       p <- p + geom_point(aes_(),
                           size = 3,  alpha=.3,
-                          data = temp_df1 %>% filter ((!!print_size) %in% seq (1.3, 0.4, by = sign(0.4-1.3) * 0.1)) )
+                          data = temp_df_plot %>% filter ((!!print_size) %in% seq (1.3, 0.4, by = sign(0.4-1.3) * 0.1)) )
       
     }
     
@@ -245,7 +282,7 @@ mnreadCurve <- function(data, print_size, viewing_distance, reading_time, errors
       # add ACC range
       p <- p + geom_point(aes_(colour = (grouping_var)[[2]]),
                           size = 3,  alpha=.3,
-                          data = temp_df1 %>% filter ((!!print_size) %in% seq (1.3, 0.4, by = sign(0.4-1.3) * 0.1)) )
+                          data = temp_df_plot %>% filter ((!!print_size) %in% seq (1.3, 0.4, by = sign(0.4-1.3) * 0.1)) )
       
       }
     

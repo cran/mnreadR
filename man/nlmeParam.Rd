@@ -4,25 +4,10 @@
 \alias{nlmeParam}
 \title{Maximum Reading Speed (MRS) and Critical Print Size (CPS) estimation using a nonlinear mixed-effect (NLME) modeling.}
 \usage{
-nlmeParam(data, print_size, viewing_distance, reading_time, errors, subjectID,
-  nested = NULL, group = NULL, CPScriterion = NULL)
+nlmeParam(nlme.model, CPScriterion = NULL)
 }
 \arguments{
-\item{data}{The name of your dataframe}
-
-\item{print_size}{The variable that contains print size values for each sentence (print size uncorrected for viewing distance)}
-
-\item{viewing_distance}{The variable that contains the viewing distance value used for testing}
-
-\item{reading_time}{The variable that contains the reading time for each sentence}
-
-\item{errors}{The variable that contains the number of errors for each sentence}
-
-\item{subjectID}{The variable that contains the subject identifiers}
-
-\item{nested}{Optional argument to build a model with a nested structure. 'nested' specifies which variable should be nested within subject}
-
-\item{group}{Optional argument to build a model with a grouped structure. 'group' specifies which variable should be used a grouping argument}
+\item{nlme.model}{The object returned by \code{\link{nlmeModel}}}
 
 \item{CPScriterion}{Optional argument to specify a criterion for CPS estimation. The default criterion value is '90 of MRS'. This criterion can vary from 75 to 95 of MRS and should only be modified for specific purposes, as discussed in Cheung et al. 2008}
 }
@@ -34,38 +19,21 @@ The function returns a new dataframe with two variables:
   }
 }
 \description{
-This function uses a nonlinear mixed effects model (NLME), as described in Cheung et al. 2008, 
-where variations across individuals are modeled as random effects. 
-This function extracts the following MNREAD parameters from the fitted model:
+This function uses the NLME model created from \code{\link{nlmeModel}} to extract the following MNREAD parameters:
  \itemize{
   \item Maximum Reading Speed (MRS)
   \item Critical Print Size (CPS)
   }
-while performing print size correction for non-standard testing viewing distance.
 }
 \section{Notes}{
 
-For subjects with incomplete data, warning messages might appear in the console. However, the NLME model will estimate MRS and CPS for these subjects, 
-using supporting data from the rest of the population.
-
-This functions supports nested, grouped and nested and grouped structures.
+To ensure proper estimation of the MRS and CPS, individual MNREAD fit should be plotted using \code{\link{nlmeCurve}} and inspected visually.
+If some of the estimated values of MRS and CPS seem off given the actual data, we advise you to run \code{\link{mnreadCurve}} 
+and overwrite these estimates with values estimated visually from the actual MNREAD curve.
 
 For more details on the nlme fit, see:\\
 Cheung SH, Kallie CS, Legge GE, Cheong AM. Nonlinear mixed-effects modeling of MNREAD data. 
 Invest Ophthalmol Vis Sci. 2008;49:828–835. doi: 10.1167/iovs.07-0555.
-
-To ensure proper estimation of the MRS and CPS, individual MNREAD curves should be plotted using \code{\link{nlmeCurve}} and inspected visually.
-}
-
-\section{Warning}{
-
-For the function to run properly, one needs to make sure that the variables are of the class:
- \itemize{
-  \item \strong{print_size} -> numeric
-  \item \strong{viewing_distance} -> integer
-  \item \strong{reading_time} -> numeric
-  \item \strong{errors} -> integer
-  }
 }
 
 \examples{
@@ -78,41 +46,26 @@ head(data_low_vision, 10)
 data_regular <- data_low_vision \%>\%
     filter (polarity == "regular")
 
-# run the parameters estimation for data grouped by subject
-\dontrun{ nlmeParam(data_regular, ps, vd, rt, err, subject) }
+# run the NLME model for data grouped by subject
+\dontrun{ nlme_model <- nlmeModel(data_regular, ps, vd, rt, err, subject) }
 
 #------
 
-# run the parameters estimation on the whole dataset with polarity nested within subject
-\dontrun{ nlmeParam(data_low_vision, ps, vd, rt, err, subject,
-                    nested = polarity) }
+# run the parameters' estimation for a default CPS criterion of '90 of MRS' 
+\dontrun{ nlmeParam(nlme_model) }
 
-#------
+# run the parameters' estimation for a specific CPS criterion of '80 of MRS'
+\dontrun{ nlmeParam(nlme_model, 0.8) }
 
-# run the parameters estimation on the whole dataset with polarity nested within subject 
-# and grouped based on treatment
-\dontrun{ nlmeParam(data_low_vision, ps, vd, rt, err, subject,
-                    nested = polarity, group = treatment) }
-
-#------
-
-# run the parameters estimation on the whole dataset with polarity nested within subject 
-# and grouped based on treatment
-# for a specific CPS criterion of '80 of MRS'
-\dontrun{ nlmeParam(data_low_vision, ps, vd, rt, err, subject, 
-                    nested = polarity, group = treatment, 
-                    0.8) }
 
 
 }
 \seealso{
-\code{\link{nlmeCurve}} to plot the estimated NLME fit
+\code{\link{nlmeModel}} to fit MNREAD data using a nonlinear mixed-effect (NLME) modeling
 
+ \code{\link{nlmeCurve}} to plot the individual MNREAD curves estimated from the NLME model
+ 
  \code{\link{curveParam_RT}} for standard estimation of MRS and CPS 
 
  \code{\link{mnreadParam}} for all MNREAD parameters estimation
-
- \code{\link{readingAcuity}} for Reading Acuity calculation
-
- \code{\link{accIndex}} for Reading Accessibility Index calculation
 }

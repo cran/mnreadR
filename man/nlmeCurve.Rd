@@ -2,54 +2,31 @@
 % Please edit documentation in R/nlme_curve.R
 \name{nlmeCurve}
 \alias{nlmeCurve}
-\title{NLME fit plotting of MNREAD data.}
+\title{Plot individual MNREAD fited curves as estimated by a nonlinear mixed-effect (NLME) modeling.}
 \usage{
-nlmeCurve(data, print_size, viewing_distance, reading_time, errors, subjectID,
-  nested = NULL, group = NULL, CPScriterion = NULL)
+nlmeCurve(nlme.model, displayCPS = TRUE, CPScriterion = NULL)
 }
 \arguments{
-\item{data}{The name of your dataframe}
+\item{nlme.model}{The object returned by \code{\link{nlmeModel}}}
 
-\item{print_size}{The variable that contains print size values for each sentence (print size uncorrected for viewing distance)}
-
-\item{viewing_distance}{The variable that contains the viewing distance value used for testing}
-
-\item{reading_time}{The variable that contains the reading time for each sentence}
-
-\item{errors}{The variable that contains the number of errors for each sentence}
-
-\item{subjectID}{The variable that contains the subject identifiers}
-
-\item{nested}{Optional argument to build a model with a nested structure. 'nested' specifies which variable should be nested within subject}
-
-\item{group}{Optional argument to build a model with a grouped structure. 'group' specifies which variable should be used a grouping argument}
+\item{displayCPS}{Optional argument to display the CPS on the individuals curves. Default is TRUE. If set to FALSE, the CPS won't be plotted.}
 
 \item{CPScriterion}{Optional argument to specify a criterion for CPS estimation. The default criterion value is '90 of MRS'. This criterion can vary from 75 to 95 of MRS and should only be modified for specific purposes, as discussed in Cheung et al. 2008}
 }
 \value{
 The function returns a plot of reading speed (in log words/min) as a function of print size (in logMAR). 
-Critical Print Size is marked as an inverted triangle.
+If displayCPS is not specified, the Critical Print Size will be marked as an inverted triangle.
 }
 \description{
-This function plots individual MNREAD curves and Critical Print Size (CPS) as estimated by the NLME fit.
+This function uses the NLME model created from \code{\link{nlmeModel}} to plot individual curves and Critical Print Size (CPS).
 }
 \section{Notes}{
 
-This function performs print size correction for non-standard testing viewing distance before plotting the curve.
+Print size shown on the plot(s) have been corrected for non-standard testing viewing distance.
 
-This function uses a nonlinear mixed effects model (NLME), as described in Cheung et al. 2008, to estimate Maximum Reading Speed (MRS) and Critical Print Size (CPS).
-For more details on the parameters estimation, see \code{\link{nlmeParam}}.
-}
-
-\section{Warning}{
-
-For the function to run properly, one needs to make sure that the variables are of the class:
- \itemize{
-  \item \strong{print_size} -> numeric
-  \item \strong{viewing_distance} -> integer
-  \item \strong{reading_time} -> numeric
-  \item \strong{errors} -> integer
-  }
+For more details on the nlme fit, see:\\
+Cheung SH, Kallie CS, Legge GE, Cheong AM. Nonlinear mixed-effects modeling of MNREAD data. 
+Invest Ophthalmol Vis Sci. 2008;49:828–835. doi: 10.1167/iovs.07-0555.
 }
 
 \examples{
@@ -62,38 +39,53 @@ head(data_low_vision, 10)
 data_regular <- data_low_vision \%>\%
     filter (polarity == "regular")
 
-# plot the NLME fit for data grouped by subject
-\dontrun{ nlmeCurve(data_regular, ps, vd, rt, err, subject) }
+# run the NLME model for data grouped by subject
+\dontrun{ nlme_model <- nlmeModel(data_regular, ps, vd, rt, err, subject) }
 
 #------
 
-# plot the NLME fit for the whole dataset with polarity nested within subject
-\dontrun{ nlmeCurve(data_low_vision, ps, vd, rt, err, subject,
-                    nested = polarity) }
+# plot MNREAD curves and CPS with a default CPS criterion of '90 of MRS' 
+\dontrun{ nlmeCurve(nlme_model) }
+
+# plot MNREAD curves without the CPS for a default CPS criterion of '90 of MRS' 
+\dontrun{ nlmeCurve(nlme_model, FALSE) }
+
+# plot MNREAD curves and CPS with a specific CPS criterion of '80 of MRS'
+\dontrun{ nlmeCurve(nlme_model, TRUE, 0.8) }
+
 
 #------
 
-# plot the NLME fit for the whole dataset with polarity nested within subject 
-# and grouped based on treatment
-\dontrun{ nlmeCurve(data_low_vision, ps, vd, rt, err, subject,
-                    nested = polarity, group = treatment) }
+# Once created, the NLME curve can be further customized using ggplot2 
 
-#------
+# plot the NLME curve 
+\dontrun{ my_plot <- nlmeCurve(nlme_model) }
 
-# plot the NLME fit for the whole dataset with polarity nested within subject 
-# and grouped based on treatment
-# for a specific CPS criterion of '80 of MRS'
-\dontrun{ nlmeCurve(data_low_vision, ps, vd, rt, err, subject, 
-                    nested = polarity, group = treatment, 
-                    0.8) }
+# display my.plot
+\dontrun{ print(my_plot) }
+
+# modify my.plot
+\dontrun{ my_new_plot <- my_plot + 
+ # overwrites the raw data points
+    geom_point(data = nlme_model[[1]], aes(x=correct_ps, y = rs), size = 4) + 
+ # changes the colors of the curve and raw data (effective only for nested designs)
+    scale_color_brewer(palette="Set1") + 
+ # changes the colors of the CPS diamond (effective only for nested designs)
+    scale_fill_brewer(palette="Set1")  + 
+ # modifies the aspect of the x-axis
+    scale_x_continuous(breaks = seq (-0.5,2.5,0.4))  }
+
+# display my.new.plot                                                                        
+\dontrun{ print(my_new_plot) }
+
 
 
 
 }
 \seealso{
+\code{\link{nlmeModel}} to fit MNREAD data using a nonlinear mixed-effect (NLME) modeling
+
+\code{\link{nlmeParam}} to estimate Maximum Reading Speed (MRS) and Critical Print Size (CPS) from the NLME model
+ 
 \code{\link{mnreadCurve}} for standard MNREAD curve
-
-\code{\link{curveParam_RT}} for MRS and CPS estimation using values of reading time (instead of reading speed)
-
-\code{\link{readingAcuity}} for Reading Acuity calculation
 }

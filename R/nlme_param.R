@@ -3,25 +3,16 @@
 
 #' Maximum Reading Speed (MRS) and Critical Print Size (CPS) estimation using a nonlinear mixed-effect (NLME) modeling. 
 #'
-#' This function uses a nonlinear mixed effects model (NLME), as described in Cheung et al. 2008, 
-#' where variations across individuals are modeled as random effects. 
-#' This function extracts the following MNREAD parameters from the fitted model:
+#' This function uses the NLME model created from \code{\link{nlmeModel}} to extract the following MNREAD parameters:
 #'  \itemize{
 #'   \item Maximum Reading Speed (MRS)
 #'   \item Critical Print Size (CPS)
 #'   }
-#' while performing print size correction for non-standard testing viewing distance.
 #'
-#' @param data The name of your dataframe
-#' @param print_size The variable that contains print size values for each sentence (print size uncorrected for viewing distance)
-#' @param viewing_distance The variable that contains the viewing distance value used for testing
-#' @param reading_time The variable that contains the reading time for each sentence
-#' @param errors The variable that contains the number of errors for each sentence
-#' @param subjectID The variable that contains the subject identifiers
-#' @param nested Optional argument to build a model with a nested structure. 'nested' specifies which variable should be nested within subject
-#' @param group Optional argument to build a model with a grouped structure. 'group' specifies which variable should be used a grouping argument
+#' @param nlme.model The object returned by \code{\link{nlmeModel}}
 #' @param CPScriterion Optional argument to specify a criterion for CPS estimation. The default criterion value is '90 of MRS'. This criterion can vary from 75 to 95 of MRS and should only be modified for specific purposes, as discussed in Cheung et al. 2008 
-#'
+#' 
+#' 
 #' @return The function returns a new dataframe with two variables:
 #'  \itemize{
 #'   \item "CPS" -> contains the Critical Print Size estimate (in logMAR)
@@ -29,37 +20,24 @@
 #'   }
 #'
 #' @section Notes:
-#' For subjects with incomplete data, warning messages might appear in the console. However, the NLME model will estimate MRS and CPS for these subjects, 
-#' using supporting data from the rest of the population.
-#' 
-#' This functions supports nested, grouped and nested and grouped structures.
+#' To ensure proper estimation of the MRS and CPS, individual MNREAD fit should be plotted using \code{\link{nlmeCurve}} and inspected visually.
+#' If some of the estimated values of MRS and CPS seem off given the actual data, we advise you to run \code{\link{mnreadCurve}} 
+#' and overwrite these estimates with values estimated visually from the actual MNREAD curve.
 #' 
 #' For more details on the nlme fit, see:\\
 #' Cheung SH, Kallie CS, Legge GE, Cheong AM. Nonlinear mixed-effects modeling of MNREAD data. 
 #' Invest Ophthalmol Vis Sci. 2008;49:828–835. doi: 10.1167/iovs.07-0555.
 #'
-#' To ensure proper estimation of the MRS and CPS, individual MNREAD curves should be plotted using \code{\link{nlmeCurve}} and inspected visually.
-#'
-#' @section Warning:
-#' For the function to run properly, one needs to make sure that the variables are of the class:
-#'  \itemize{
-#'   \item \strong{print_size} -> numeric
-#'   \item \strong{viewing_distance} -> integer
-#'   \item \strong{reading_time} -> numeric
-#'   \item \strong{errors} -> integer
-#'   }
-#'
 #'
 #' @seealso
-#'  \code{\link{nlmeCurve}} to plot the estimated NLME fit
+#'  \code{\link{nlmeModel}} to fit MNREAD data using a nonlinear mixed-effect (NLME) modeling
 #'
+#'  \code{\link{nlmeCurve}} to plot the individual MNREAD curves estimated from the NLME model
+#'  
 #'  \code{\link{curveParam_RT}} for standard estimation of MRS and CPS 
 #'
 #'  \code{\link{mnreadParam}} for all MNREAD parameters estimation
 #'
-#'  \code{\link{readingAcuity}} for Reading Acuity calculation
-#'
-#'  \code{\link{accIndex}} for Reading Accessibility Index calculation
 #'
 #'
 #' @examples 
@@ -72,56 +50,29 @@
 #' data_regular <- data_low_vision %>%
 #'     filter (polarity == "regular")
 #'
-#' # run the parameters estimation for data grouped by subject
-#' \dontrun{ nlmeParam(data_regular, ps, vd, rt, err, subject) }
+#' # run the NLME model for data grouped by subject
+#' \dontrun{ nlme_model <- nlmeModel(data_regular, ps, vd, rt, err, subject) }
 #'
 #' #------
 #'
-#' # run the parameters estimation on the whole dataset with polarity nested within subject
-#' \dontrun{ nlmeParam(data_low_vision, ps, vd, rt, err, subject,
-#'                     nested = polarity) }
-#'
-#' #------
-#'
-#' # run the parameters estimation on the whole dataset with polarity nested within subject 
-#' # and grouped based on treatment
-#' \dontrun{ nlmeParam(data_low_vision, ps, vd, rt, err, subject,
-#'                     nested = polarity, group = treatment) }
-#'
-#' #------
-#'
-#' # run the parameters estimation on the whole dataset with polarity nested within subject 
-#' # and grouped based on treatment
-#' # for a specific CPS criterion of '80 of MRS'
-#' \dontrun{ nlmeParam(data_low_vision, ps, vd, rt, err, subject, 
-#'                     nested = polarity, group = treatment, 
-#'                     0.8) }
+#' # run the parameters' estimation for a default CPS criterion of '90 of MRS' 
+#' \dontrun{ nlmeParam(nlme_model) }
+#' 
+#' # run the parameters' estimation for a specific CPS criterion of '80 of MRS'
+#' \dontrun{ nlmeParam(nlme_model, 0.8) }
+#' 
 #'
 #' 
 #' @importFrom stats sd coef predict
 #' @importFrom tibble rownames_to_column
-#' @importFrom nlme nlsList nlme groupedData nlmeControl
 #' @import dplyr
 #' 
 #' 
 #'
 #' @export
-nlmeParam <- function(data, print_size, viewing_distance, reading_time, errors, subjectID, nested = NULL, group = NULL, CPScriterion = NULL) {
-  # This function runs an nlme fit to estimate the Maximum reading Speed (MRS) and Critical Print Size (CPS) and returns them in a new dataframe.
+nlmeParam <- function(nlme.model, CPScriterion = NULL) {
+  # This function estimates the Maximum reading Speed (MRS) and Critical Print Size (CPS) from the NLME model estimated with nlmeModel().
 
-  print_size <- enquo(print_size)
-  viewing_distance <- enquo(viewing_distance)
-  reading_time <- enquo(reading_time)
-  errors <- enquo(errors)
-  subjectID <- enquo(subjectID)
-  nested <- enquo(nested)
-  group <-enquo(group)
-  subject <- NULL
-  group_var <- NULL
-  nested_var <- NULL
-  rs <- NULL
-  log_rs <- NULL
-  correct_ps <- NULL
   asym <- NULL
   lrc <- NULL
   x_intercept <- NULL
@@ -129,76 +80,14 @@ nlmeParam <- function(data, print_size, viewing_distance, reading_time, errors, 
   rowname <- NULL
   MRS <- NULL
   CPS <- NULL
+  subject <- NULL
+  nested_var <- NULL
   . <- NULL
 
-  message('This may take a few minutes... just relax and take a break :-) 
-          And remember to check the accuracy of the MRS and CPS estimates by inspecting the NLME fit with nlmeCurve()')
-
-  # modify the raw dataframe as needed before running the model
-  # by using <<- I created the df in the global environment so nlme() can access it even after running nlsList()
-  temp_df <- as.data.frame(
-    data %>%
-      mutate (subject = (!!subjectID) ) %>%
-      mutate (nested_var = (!!nested) ) %>%
-      mutate (group_var = (!!group) ) %>%
-      filter ((!!errors) != "NA" & (!!reading_time) > 0) %>%
-      mutate (rs = (10 - replace ((!!errors), (!!errors) > 10, 10)) / (!!reading_time) * 60) %>%
-      filter (rs != "NA", rs != "-Inf") %>%
-      mutate (log_rs = log10(rs)) %>%
-      filter (log_rs != "NA", log_rs != "-Inf") %>%
-      mutate (correct_ps = (!!print_size) + round(log10(40/(!!viewing_distance)), 2)) %>%
-      filter (correct_ps != "NA", correct_ps != "-Inf")
-  )
-  
-  # create the groupedData to be passed to the NLME model
-  ## NB: no matter what structure is used for the model (nested, grouped, ...)
-  ## the model call will always be the same, it is the structure of the groupedData that will change
-
-  if ( "nested_var" %in% names(temp_df) == FALSE  ) {
-    if ( "group_var" %in% names(temp_df) == FALSE ) {
-      grouped_df <- groupedData(log_rs ~ correct_ps | subject,
-                                data = temp_df %>% select(log_rs, correct_ps, subject),
-                                labels = list( x = "Print size", y = "Log reading speed"),
-                                units = list( x = "(logMAR)", y = "(logWPM)"))    }
-    else {
-      grouped_df <- groupedData(log_rs ~ correct_ps | subject,
-                                outer = ~ group_var,
-                                data = temp_df %>% select(log_rs, correct_ps, subject, group_var),
-                                labels = list( x = "Print size", y = "Log reading speed"),
-                                units = list( x = "(logMAR)", y = "(logWPM)"))    }
-  }
-  
-  if ( "nested_var" %in% names(temp_df) == TRUE ) {
-    if ( "group_var" %in% names(temp_df) == FALSE ) {
-      grouped_df <- groupedData(log_rs ~ correct_ps | subject/nested_var,
-                                data = temp_df %>% select(log_rs, correct_ps, subject, nested_var),
-                                labels = list( x = "Print size", y = "Log reading speed"),
-                                units = list( x = "(logMAR)", y = "(logWPM)"))     }
-      else {
-      grouped_df <- groupedData(log_rs ~ correct_ps | subject/nested_var,
-                                outer = ~ group_var,
-                                data = temp_df %>% select(log_rs, correct_ps, subject, nested_var, group_var),
-                                labels = list( x = "Print size", y = "Log reading speed"),
-                                units = list( x = "(logMAR)", y = "(logWPM)"))    }
-  }
-  
-
-  # generate starting values for nlme by running nlsList
-  my.list <- nlsList (model = log_rs ~ SSasympOff (correct_ps, asym, lrc, x_intercept) ,
-                      data = grouped_df )
-  my.starting.values <- colMeans( as.matrix( coef(my.list), na.rm=TRUE ), 
-                                  na.rm=TRUE ) # Missing values should be omitted from the calculations
-  
-  # run my nlme model
-  my.model <- nlme (model = log_rs ~ SSasympOff (correct_ps, asym, lrc, x_intercept),
-                    data = grouped_df,
-                    fixed = asym + lrc + x_intercept ~ 1, # set the fixed structure for nlme
-                    # by default the random structure is set to (asym ~ 1, lrc ~ 1, x_intercept ~ 1) for grp_var
-                    start = my.starting.values,
-                    control = nlmeControl(maxIter = 500, pnlsTol = 0.3)) # set the control parameters for nlme
+  message('Remember to check the MRS and CPS estimates visually by inspecting the NLME fit with nlmeCurve()')
   
   # extract coefficients from the nlme model
-  my.coef <- rownames_to_column(as.data.frame(coef(my.model)))
+  my.coef <- rownames_to_column(as.data.frame(coef(nlme.model[[2]])))
 
   # set the percentage of maximum reading speed we want to use
   # CPS is the smallest print size that yields p times the maximum reading speed
@@ -208,11 +97,12 @@ nlmeParam <- function(data, print_size, viewing_distance, reading_time, errors, 
     CPS_crit = CPScriterion }
     
   # get Maximum Reading Speed (MRS) and Critical Print Size (CPS)
-  nlme.estimates <- my.coef %>% 
+  nlme.estimates <- as.data.frame ( my.coef %>% 
     mutate (MRS = 10 ^ asym) %>%
     mutate (CPS = log((-log10(CPS_crit))/asym) / (-exp(lrc)) + x_intercept) %>%
-    rename (grp_var = rowname ) %>%
-    select (grp_var, MRS, CPS)
+    separate(rowname, into = c("subject", "nested_var"), sep = "/", fill = "right") %>%
+    select (subject, nested_var, MRS, CPS) %>%
+    select_if(~!all(is.na(.))) )
   
   return(nlme.estimates)
   

@@ -59,6 +59,15 @@ For the function to run properly, one needs to make sure that the variables are 
 In cases where only 3 or less sentences were read during a test,
 MRS and CPS cannot be estimated and won't be displayed on the plot.
 In such cases, the Reading Accessibility Index (ACC) can be used to estimate the MNREAD score instead (cf. \code{\link{accIndex}}).
+
+To ensure proper plotting, the data should be entered along certain rules:
+ \itemize{
+  \item For the smallest print size that is presented but not read, right before the test is stopped: \strong{reading_time = NA, errors = 10}
+  \item For all the small sentences that are not presented because the test was stopped before them: \strong{reading_time = NA, errors = NA}
+  \item If a sentence is presented, and read, but the time was not recorded by the experimenter: \strong{reading_time = NA, errors = actual number of errors} (cf. s5-regular in low vision data sample)
+  \item If a large sentence was skipped to save time but would have been read well: \strong{reading_time = NA, errors = NA} (cf. s1-regular in normal vision data sample)
+  \item If a large sentence was skipped to save time because the subject cannot read large print: \strong{reading_time = NA, errors = 10} (cf. s7 in low vision data sample)
+  }
 }
 
 \examples{
@@ -101,10 +110,10 @@ data_s2 <- data_low_vision \%>\%
 # plot the MNREAD curve 
 my.plot <- mnreadCurve(data_s1, ps, vd, rt, err, polarity)
 
-# displays my.plot
+# display my.plot
 print(my.plot)
 
-# calculates reading speed and perform print size correction
+# calculate reading speed and perform print size correction
 data_s1_new <- as.data.frame(
 data_s1 \%>\%
     filter (err != "NA" & rt > 0) \%>\%
@@ -117,8 +126,27 @@ my.new.plot <- my.plot + geom_text(aes(x = correct_ps, y = rs + 5, label = error
                                    alpha = 0.5,
                                    data = data_s1_new \%>\% filter (errors10 != 0) )
 
-# displays my.new.plot                                                                        
+# display my.new.plot                                                                        
 print(my.new.plot)
+
+#------
+
+# MNREAD curves can also be saved in a pdf file, with each page showing a different subject
+ 
+# count the number of subjects to define the number of pages
+num_pages = length(unique(data_s2$subject))
+
+# create a pdf file 
+pdf ("MNREAD_curves.pdf", width = 10.5, height = 8, paper = "special", useDingbats = TRUE)
+
+# wrap the plots over several pages
+for (i in seq(num_pages)){
+    p <- mnreadCurve(data_s2 \%>\% filter (subject == sort(unique(data_s2$subject))[i]),
+                     ps, vd, rt, err, subject, polarity)
+    print(p)
+}
+
+dev.off()
 
 
 }

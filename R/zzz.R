@@ -4,7 +4,7 @@
 
 .onAttach <- function(libname, pkgname) {
   packageStartupMessage("Welcome to the MNREAD R package!
-                        v2.0.0 now includes NLME estimation of the MRS and CPS :-)")
+             v2.1.0 now includes several functions to perform NLME modeling :-)")
 }
 
 

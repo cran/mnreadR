@@ -99,14 +99,14 @@ mansfield_algo <- function(df, logmar, nb_row, logRS) {
           summarise (mean(rs))) }
       # MRS = round(mrs, 2)  
 
-    return(as.data.frame(cbind(CPS, MRS)))
+    return(as.data.frame(cbind(MRS, CPS)))
   }
 
   # If there are only 3 or less sentences tested, the estimation cannot run -> MRS and CPS are set to NA
   if (unique(nb_row) <= 3) {
     CPS = NA
     MRS = NA
-    return(as.data.frame(cbind(CPS, MRS)))
+    return(as.data.frame(cbind(MRS, CPS)))
   }
 
 }
