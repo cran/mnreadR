@@ -1,9 +1,10 @@
 Package: mnreadR
 Type: Package
 Title: MNREAD Parameters Estimation and Curve Plotting
-Version: 2.1.0
+Version: 2.1.1
 Authors@R: c(
     person("Aurélie", "Calabrèse", email = "acalabre@umn.edu", role = c("aut", "cre")),
+    person("J. Steve", "Mansfield", email = "steve.mansfield@plattsburgh.edu", role = "aut"),
     person("Gordon E.", "Legge", email = "legge@umn.edu", role = "aut")
     )
 Description: Allows to analyze the reading data obtained with the MNREAD Acuity 
@@ -22,9 +23,10 @@ Encoding: UTF-8
 LazyData: true
 RoxygenNote: 6.0.1
 NeedsCompilation: no
-Packaged: 2018-07-06 15:48:32 UTC; Aurelie
+Packaged: 2018-11-14 10:34:08 UTC; Aurelie
 Author: Aurélie Calabrèse [aut, cre],
+  J. Steve Mansfield [aut],
   Gordon E. Legge [aut]
 Maintainer: Aurélie Calabrèse <acalabre@umn.edu>
 Repository: CRAN
-Date/Publication: 2018-07-06 16:00:03 UTC
+Date/Publication: 2018-11-14 10:50:02 UTC

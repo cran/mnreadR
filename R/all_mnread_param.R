@@ -124,6 +124,7 @@ mnreadParam <- function(data, print_size, viewing_distance, reading_time, errors
   r_time <- NULL
   error_nb <- NULL
   p_size <- NULL
+  ps <- NULL
   min_ps <- NULL
   sum_err <- NULL
   nb_row <- NULL
@@ -148,7 +149,8 @@ mnreadParam <- function(data, print_size, viewing_distance, reading_time, errors
       mutate (r_time = (!!reading_time)) %>%
       mutate (error_nb = (!!errors)) %>%
       mutate (p_size = (!!print_size)) %>%
-      filter ( p_size >= 0.4 & p_size <= 1.3 ) )
+      mutate (ps = p_size) %>%
+      filter (p_size >= 0.4 & p_size <= 1.3 ) )
 
   # with no grouping argument
   if ( missing(...) )  {
@@ -174,7 +176,7 @@ mnreadParam <- function(data, print_size, viewing_distance, reading_time, errors
         do (acc_algo(.))  )
 
     # create one single df with all 4 parameters
-    all_param <- cbind(RAdf, MRS_CPSdf, ACCdf)
+    all_param <- cbind(MRS_CPSdf, RAdf, ACCdf)
     
   }
 
@@ -206,10 +208,13 @@ mnreadParam <- function(data, print_size, viewing_distance, reading_time, errors
         do (acc_algo(.))  )
 
     # create one single df with all 4 parameters
-    join_temp <- left_join(RAdf, MRS_CPSdf)
+    join_temp <- left_join(MRS_CPSdf, RAdf)
     all_param <- left_join(join_temp, ACCdf)
 
   }
+
+  return(all_param)
+  
 }
 
 

@@ -1,7 +1,7 @@
 #----- nlmeCurve ------
 #######################--
 
-#' Plot individual MNREAD fited curves as estimated by a nonlinear mixed-effect (NLME) modeling. 
+#' Plot individual MNREAD fitted curves as estimated by a nonlinear mixed-effect (NLME) modeling. 
 #' 
 #' This function uses the NLME model created from \code{\link{nlmeModel}} to plot individual curves and Critical Print Size (CPS).
 #'
@@ -80,6 +80,32 @@
 #' # display my.new.plot                                                                        
 #' \dontrun{ print(my_new_plot) }
 #'
+#'
+#' #------
+#'
+#' # For very large datasets, it can be usefull to plot only selected facets to inspect individual fit
+#' # To do so, one needs to restrict the dataframe called in each of the three layers of the plot
+#' 
+#' # list of subject names to keep
+#' subjects_to_keep <- paste ("s", 1:4, sep = "")
+#' 
+#' # first filter the original data points (data called in the first layer)
+#' \dontrun{ my_plot$data <- my_plot$data %>%
+#'     filter(subject %in% subjects_to_keep) %>%
+#'     droplevels() }
+#'     
+#' # then filter the fitted data points (data called in the second layer)
+#' \dontrun{ my_plot$layers[[2]]$data <- my_plot$layers[[2]]$data %>% 
+#'     filter(subject %in% subjects_to_keep) %>% 
+#'     droplevels() }
+#'   
+#' # and finally, if 'displayCPS' was set to TRUE, filter the data used to display the CPS
+#' \dontrun{ my_plot$layers[[4]]$data <- my_plot$layers[[4]]$data %>% 
+#'     filter(subject %in% subjects_to_keep) %>%
+#'     droplevels() }
+#'     
+#' # plot the restricted my.plot
+#' \dontrun{ my_plot }
 #'
 #'
 #'

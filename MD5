@@ -1,7 +1,7 @@
-82408a6e6109b0c4fdbcc09dd1ab9050 *DESCRIPTION
+a6e10c9b35c368fa68d5715d38d9321e *DESCRIPTION
 bc81b1d5d9eee076bc5126956d1357c4 *NAMESPACE
-382b855a9be11fa01f60174d5ec27a96 *R/acc_index.R
-93e5ad6baa9a02b9043d13ffc80e56d6 *R/all_mnread_param.R
+75c77c29692f9fc1f71fa931c43a7a4d *R/acc_index.R
+76386da11d32a34e205b3ec96d77270e *R/all_mnread_param.R
 1910a43d6f799a9fcdc3184528a9d109 *R/curve_param.R
 9be0d24d7529af28fec5353118fa565b *R/data_low_vision.R
 cec225e8e85fa80a8af8a723177cfcb5 *R/data_normal_vision.R
@@ -10,7 +10,7 @@ e8f22caeb03b3ed9ffe78664d00e616d *R/mnreadR.R
 995d020da1d35fc8e44fba57b6a3c82b *R/mnread_curve.R
 d46f5d6f322dd7545e81b25630a6e444 *R/nlmePredict_PS.R
 77aec683a3bfe341ba458e95046e60b7 *R/nlmePredict_RS.R
-7c5663f1f6215835117ff260b888f4fe *R/nlme_curve.R
+43fbb3ce7d79bdcab97978c352f88801 *R/nlme_curve.R
 695df5a84713ea5c903fa25096666379 *R/nlme_model.R
 f6ebfba32da346499a37940136bf859e *R/nlme_param.R
 60bbc3c1075a93cf697c63bb900229ea *R/reading_acuity.R
@@ -19,7 +19,7 @@ ea378ef9811b80d512d9fad4a45fd0b1 *R/viewing_distance_correction.R
 27e2d6f7eece737e543d5117ee2c0b46 *R/zzz.R
 2fb097c9542528db6c2030d0b24eec6d *data/data_low_vision.rda
 ffa095223fbf01c1587c0e1f3a06341a *data/data_normal_vision.rda
-51208126266b6b69e972b2d155aa1669 *inst/CITATION
+8e1a43a163f2a45b3009f318fc2f9acf *inst/CITATION
 119de320f952ddb971b6b723bb28289c *man/accIndex.Rd
 f4ce34dc90b999fa73825c847daee132 *man/curveParam_RS.Rd
 0ac710258769e926034b7860f6d92d10 *man/curveParam_RT.Rd
@@ -29,7 +29,7 @@ d73927f6ba18ae94f06491ee18b17b81 *man/logMARcorrect.Rd
 31d7acd63ebc6ccaeed63ed6eb6310d4 *man/mnreadCurve.Rd
 c7212629d098b65e83175ba6ef900f64 *man/mnreadParam.Rd
 d723241b6134d65cfe14e9c56e271a9d *man/mnreadR.Rd
-6cd74815f03639bff92eaf2b17e970c2 *man/nlmeCurve.Rd
+0f6ff7f391ee50fca687a1f47e923e76 *man/nlmeCurve.Rd
 6540ca1b80390afd3be38dfb5f813d35 *man/nlmeModel.Rd
 5d0d6cfde5cd2484f6fe1de563362b1c *man/nlmeParam.Rd
 47ac46aa2c74811137ac758fabdd86a0 *man/nlmePredict_PS.Rd

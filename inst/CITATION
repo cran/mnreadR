@@ -2,6 +2,6 @@ citHeader("To cite mnreadR in publications, use:")
 citEntry(
   entry        = "Misc",  title        = "{mnreadR}, an R package to analyze MNREAD data",
   author       = personList(as.person("Aurélie Calabrèse"),    		     as.person("J. Steve Mansfield"),
-		     as.person("Gordon E. Legge")),  year 	       = "2017",
-  textVersion  =  paste("Aurélie Calabrèse, J. Steve Mansfield, Gordon E. Legge (2017)",        "mnreadR, an R package to analyze MNREAD data.")
+		     as.person("Gordon E. Legge")),  year 	       = "2018",
+  textVersion  =  paste("Aurélie Calabrèse, J. Steve Mansfield, Gordon E. Legge (2018)",        "mnreadR, an R package to analyze MNREAD data.")
 )

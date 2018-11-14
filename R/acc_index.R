@@ -87,6 +87,7 @@ accIndex <- function(data, print_size, reading_time, errors, ... = NULL) {
   r_time <- NULL
   error_nb <- NULL
   p_size <- NULL
+  ps <- NULL
   . <- NULL
 
   # modify the raw dataframe as needed before running the actual ACC calculation
@@ -96,7 +97,9 @@ accIndex <- function(data, print_size, reading_time, errors, ... = NULL) {
       mutate (r_time = (!!reading_time)) %>%
       mutate (error_nb = (!!errors)) %>%
       mutate (p_size = (!!print_size)) %>%
-      filter (p_size >= 0.4 & p_size <= 1.3 )
+      mutate (ps = p_size) %>%
+      filter (p_size >= 0.4 & p_size <= 1.3 )  
+      
   )
 
   # estimates ACC with no grouping argument
@@ -115,6 +118,8 @@ accIndex <- function(data, print_size, reading_time, errors, ... = NULL) {
         do (acc_algo(.))  )
   }
 
+  return(ACCdf)
+  
 }
 
 acc_algo <- function(df) {
