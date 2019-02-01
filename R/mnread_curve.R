@@ -166,6 +166,7 @@ mnreadCurve <- function(data, print_size, viewing_distance, reading_time, errors
   MRS <- NULL
   CPS <- NULL
   . <- NULL
+  .drop <- TRUE
  
   # modify the raw dataframe as needed before running the MRS And CPS estimation
   temp_df1 <- as.data.frame(
@@ -238,19 +239,21 @@ mnreadCurve <- function(data, print_size, viewing_distance, reading_time, errors
     # calculate reading acuity
     RAdf <- as.data.frame(
       temp_df1 %>%
-        group_by (!!!grouping_var) %>%
+        group_by (!!!grouping_var, .drop = TRUE) %>%
         summarise (min_ps = min(correct_ps),
                    sum_err = sum((errors10), na.rm=T)) %>%
         mutate (RA = min_ps + sum_err*(0.01)) %>%
-        select (-min_ps, -sum_err)  )
+        select (-min_ps, -sum_err)  ) %>%
+      filter (.drop != "NA") %>% select (-.drop)
     
     # estimates MRS and CPS
     MRS_CPSdf <- as.data.frame(
       temp_df1 %>%
-        group_by (!!!grouping_var) %>%
+        group_by (!!!grouping_var, .drop = TRUE) %>%
         arrange (correct_ps) %>% # sort temp_df by correct_ps in ascending order
         mutate (nb_row = n()) %>%
-        do (mansfield_algo(., .$correct_ps, .$nb_row, .$log_rs))  )
+        do (mansfield_algo(., .$correct_ps, .$nb_row, .$log_rs))  ) %>%
+      filter (.drop != "NA") %>% select (-.drop)
     
     if ( length(grouping_var) == 1 )  {
       p <- p + facet_wrap((grouping_var)[[1]], scales = "free")
@@ -289,13 +292,17 @@ mnreadCurve <- function(data, print_size, viewing_distance, reading_time, errors
     }
   
   # add MRS
-  p <- p + geom_hline(aes(yintercept = MRS),
-                      linetype = "longdash", alpha=.4,
-                      data = MRS_CPSdf)
+  if (is.logical(MRS_CPSdf$MRS) == F) {
+    p <- p + geom_hline(aes(yintercept = MRS),
+                        linetype = "longdash", alpha=.4,
+                        data = MRS_CPSdf)
+    }
   # add CPS
-  p <- p + geom_vline(aes(xintercept = CPS),
-                      linetype = "longdash", alpha=.4,
-                      data = MRS_CPSdf)
+  if (is.logical(MRS_CPSdf$CPS) == F) {
+    p <- p + geom_vline(aes(xintercept = CPS),
+                        linetype = "longdash", alpha=.4,
+                        data = MRS_CPSdf)
+    }
   
   return(p)
   

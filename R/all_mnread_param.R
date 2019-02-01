@@ -129,6 +129,7 @@ mnreadParam <- function(data, print_size, viewing_distance, reading_time, errors
   sum_err <- NULL
   nb_row <- NULL
   . <- NULL
+  .drop <- TRUE
 
   # modify the raw dataframe as needed before running the RA, MRS And CPS estimation
   temp_df1 <- as.data.frame(
@@ -187,25 +188,28 @@ mnreadParam <- function(data, print_size, viewing_distance, reading_time, errors
     # calculate reading acuity
     RAdf <- as.data.frame(
       temp_df1 %>%
-        group_by (!!!grouping_var) %>%
+        group_by (!!!grouping_var, .drop = TRUE) %>%
         summarise (min_ps = min(correct_ps),
                    sum_err = sum((errors10), na.rm=T)) %>%
         mutate (RA = min_ps + sum_err*(0.01)) %>%
-        select (-min_ps, -sum_err)  )
+        select (-min_ps, -sum_err)  ) %>%
+      filter (.drop != "NA") %>% select (-.drop)
 
     # estimates MRS and CPS
     MRS_CPSdf <- as.data.frame(
       temp_df1 %>%
-        group_by (!!!grouping_var) %>%
+        group_by (!!!grouping_var, .drop = TRUE) %>%
         arrange (correct_ps) %>% # sort temp_df by correct_ps in ascending order
         mutate (nb_row = n()) %>%
-        do (mansfield_algo(., .$correct_ps, .$nb_row, .$log_rs))  )
+        do (mansfield_algo(., .$correct_ps, .$nb_row, .$log_rs))  ) %>%
+      filter (.drop != "NA") %>% select (-.drop)
 
     # calculate reading accessibility index
     ACCdf <- as.data.frame(
       temp_df2 %>%
-        group_by (!!!grouping_var) %>%
-        do (acc_algo(.))  )
+        group_by (!!!grouping_var, .drop = TRUE) %>%
+        do (acc_algo(.))  ) %>%
+      filter (.drop != "NA") %>% select (-.drop)
 
     # create one single df with all 4 parameters
     join_temp <- left_join(MRS_CPSdf, RAdf)

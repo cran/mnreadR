@@ -51,6 +51,7 @@
 # where there are not enough data points to fit the MNREAD curve.
 #
 
+
 mansfield_algo <- function(df, logmar, nb_row, logRS) {
 
   rs <- NULL
@@ -58,10 +59,21 @@ mansfield_algo <- function(df, logmar, nb_row, logRS) {
   # set initial parameters
   fastest_mean <- 0
   smallest <- 1.4
-  if (min(logmar) < smallest) {smallest = min(logmar)}
+  
+  if (length(logmar) == 0) {
+    CPS = NA
+    MRS = NA
+    return(as.data.frame(cbind(MRS, CPS)))
+  }
 
-  # If there are at least 4 sentences tested, the estimation runs
-  if (unique(nb_row) > 3) {
+  if (length(logmar) != 0) {
+    
+    if (min(logmar) < smallest) {smallest = min(logmar)}
+
+    if (length(unique(nb_row)) != 0) {
+      
+    # If there are at least 4 sentences tested, the estimation runs
+    if (unique(nb_row) > 3) {
 
     # CPS estimation
     for (i in 2:(unique(nb_row)-2)) {  # unique(nb_row) is the number of row for the current sub-df
@@ -97,18 +109,28 @@ mansfield_algo <- function(df, logmar, nb_row, logRS) {
         df %>%
           filter (logmar > fastest_cps) %>%
           summarise (mean(rs))) }
-      # MRS = round(mrs, 2)  
+      # MRS = round(mrs, 2)
 
     return(as.data.frame(cbind(MRS, CPS)))
   }
 
+    # If there are only 3 or less sentences tested, the estimation cannot run -> MRS and CPS are set to NA
+    if (unique(nb_row) <= 3) {
+     CPS = NA
+     MRS = NA
+     return(as.data.frame(cbind(MRS, CPS)))
+    }
+
+    }
+  
   # If there are only 3 or less sentences tested, the estimation cannot run -> MRS and CPS are set to NA
-  if (unique(nb_row) <= 3) {
+  if (length(unique(nb_row)) == 0) {
     CPS = NA
     MRS = NA
     return(as.data.frame(cbind(MRS, CPS)))
   }
-
+    
+  }
 }
 
 

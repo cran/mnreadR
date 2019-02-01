@@ -121,6 +121,7 @@ curveParam_RT <- function(data, print_size, viewing_distance, reading_time, erro
   correct_ps <- NULL
   nb_row <- NULL
   . <- NULL
+  .drop <- TRUE
 
   # modify the raw dataframe as needed before running the actual MRS And CPS estimation
   temp_df <- as.data.frame(
@@ -147,10 +148,11 @@ curveParam_RT <- function(data, print_size, viewing_distance, reading_time, erro
     grouping_var <- quos(...)
     as.data.frame(
       temp_df %>%
-        group_by (!!!grouping_var) %>%
+        group_by (!!!grouping_var, .drop = TRUE) %>%
         arrange (correct_ps) %>% # sort temp_df by correct_ps in ascending order
-        mutate (nb_row = n()) %>%
-        do (mansfield_algo(., .$correct_ps, .$nb_row, .$log_rs))  )
+        mutate (nb_row = n())  %>%
+        do (mansfield_algo(., .$correct_ps, .$nb_row, .$log_rs))  ) %>%
+      filter (.drop != "NA") %>% select (-.drop)
   }
 }
 
@@ -227,6 +229,10 @@ curveParam <- function(data, print_size, viewing_distance, reading_time, errors,
 #'
 #' @examples # inspect the structure of the dataframe
 #' @examples head(data_low_vision, 10)
+#' 
+#' @examples # create the reading speed variable 
+#' @examples data_low_vision <- data_low_vision %>% 
+#' @examples   mutate (rs = (10 - replace (err, err > 10, 10)) / rt * 60)
 #'
 #' #------
 #'
@@ -235,7 +241,7 @@ curveParam <- function(data, print_size, viewing_distance, reading_time, errors,
 #' @examples    filter (subject == "s1", polarity == "regular")
 #'
 #' @examples # run the parameters estimation
-#' @examples data_low_vision_MRS_CPS <- curveParam_RS(data_s1, ps, vd, rt, err)
+#' @examples data_low_vision_MRS_CPS <- curveParam_RS(data_s1, ps, vd, rs)
 #'
 #' @examples # inspect the newly created dataframe
 #' @examples data_low_vision_MRS_CPS
@@ -243,7 +249,7 @@ curveParam <- function(data, print_size, viewing_distance, reading_time, errors,
 #' #------
 #'
 #' @examples # run the parameters estimation on the whole dataset grouped by subject and polarity
-#' @examples data_low_vision_MRS_CPS <- curveParam_RS(data_low_vision, ps, vd, rt, err,
+#' @examples data_low_vision_MRS_CPS <- curveParam_RS(data_low_vision, ps, vd, rs,
 #' @examples                                            subject, polarity)
 #'
 #' @examples # inspect the structure of the newly created dataframe
@@ -268,6 +274,7 @@ curveParam_RS <- function(data, print_size, viewing_distance, reading_speed, ...
   correct_ps <- NULL
   nb_row <- NULL
   . <- NULL
+  .drop <- TRUE
 
   # modify the raw dataframe as needed before running the actual MRS And CPS estimation
   temp_df <- as.data.frame(
@@ -293,10 +300,11 @@ curveParam_RS <- function(data, print_size, viewing_distance, reading_speed, ...
     grouping_var <- quos(...)
     as.data.frame(
       temp_df %>%
-        group_by (!!!grouping_var) %>%
+        group_by (!!!grouping_var, .drop = TRUE) %>%
         arrange (correct_ps) %>% # sort temp_df by correct_ps in ascending order
         mutate (nb_row = n()) %>%
-        do (mansfield_algo(., .$correct_ps, .$nb_row, .$log_rs))  )
+        do (mansfield_algo(., .$correct_ps, .$nb_row, .$log_rs))  ) %>%
+      filter (.drop != "NA") %>% select (-.drop)
   }
 }
 

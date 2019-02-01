@@ -4,8 +4,8 @@
 \alias{nlmeModel}
 \title{MNREAD data fitting using a nonlinear mixed-effect (NLME) modeling.}
 \usage{
-nlmeModel(data, print_size, viewing_distance, reading_time, errors, subjectID,
-  nested = NULL, group = NULL)
+nlmeModel(data, print_size, viewing_distance, reading_time, errors,
+  subjectID, nested = NULL, group = NULL)
 }
 \arguments{
 \item{data}{The name of your dataframe}

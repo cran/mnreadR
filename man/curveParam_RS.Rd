@@ -4,7 +4,8 @@
 \alias{curveParam_RS}
 \title{Standard estimation of Maximum Reading Speed (MRS) and Critical Print Size (CPS) using reading speed values.}
 \usage{
-curveParam_RS(data, print_size, viewing_distance, reading_speed, ... = NULL)
+curveParam_RS(data, print_size, viewing_distance, reading_speed,
+  ... = NULL)
 }
 \arguments{
 \item{data}{The name of your dataframe}
@@ -68,6 +69,10 @@ where there are not enough data points to fit the MNREAD curve.
 # inspect the structure of the dataframe
 head(data_low_vision, 10)
 
+# create the reading speed variable 
+data_low_vision <- data_low_vision \%>\% 
+  mutate (rs = (10 - replace (err, err > 10, 10)) / rt * 60)
+
 #------
 
 # restrict dataset to one MNREAD test only (subject s1, regular polarity)
@@ -75,7 +80,7 @@ data_s1 <- data_low_vision \%>\%
    filter (subject == "s1", polarity == "regular")
 
 # run the parameters estimation
-data_low_vision_MRS_CPS <- curveParam_RS(data_s1, ps, vd, rt, err)
+data_low_vision_MRS_CPS <- curveParam_RS(data_s1, ps, vd, rs)
 
 # inspect the newly created dataframe
 data_low_vision_MRS_CPS
@@ -83,7 +88,7 @@ data_low_vision_MRS_CPS
 #------
 
 # run the parameters estimation on the whole dataset grouped by subject and polarity
-data_low_vision_MRS_CPS <- curveParam_RS(data_low_vision, ps, vd, rt, err,
+data_low_vision_MRS_CPS <- curveParam_RS(data_low_vision, ps, vd, rs,
                                            subject, polarity)
 
 # inspect the structure of the newly created dataframe
