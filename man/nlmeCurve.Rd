@@ -53,7 +53,6 @@ data_regular <- data_low_vision \%>\%
 # plot MNREAD curves and CPS with a specific CPS criterion of '80 of MRS'
 \dontrun{ nlmeCurve(nlme_model, TRUE, 0.8) }
 
-
 #------
 
 # Once created, the NLME curve can be further customized using ggplot2 
@@ -105,7 +104,48 @@ subjects_to_keep <- paste ("s", 1:4, sep = "")
 # plot the restricted my.plot
 \dontrun{ my_plot }
 
+#------
 
+# It is also possible to export the curves in a pdf file running over several pages 
+# and select the desired number of curves per page 
+
+# set the desired number of subjects by page 
+facet_nb = 4
+
+# count the resulting number of pages 
+num_pages = ceiling(length(unique(data_low_vision$subject))/facet_nb)
+
+# identify the list of subject names
+subjects_to_plot <- unique(as.character(data_low_vision$subject))
+
+# split the list into chunks the same size as the number of subjects per page
+subjects_to_plot_splitted <- split(subjects_to_plot, ceiling(seq_along(subjects_to_plot)/facet_nb))
+
+# create a pdf and wrap plots over several pages
+\dontrun{ pdf("nlme-MNREAD-curves.pdf",
+              width = 10.5, height = 8,
+              paper="USr", useDingbats=T)
+              
+              for (i in seq(num_pages))
+              {
+                 my.plot <- nlmeCurve(nlme_model, displayCPS = F) 
+                 
+                 # filter the original data points for the selected chunk of subjects
+                 my.plot$data <- my.plot$data \%>\%
+                 filter(subject \%in\% subjects_to_plot_splitted[[i]]) \%>\%
+                 droplevels()
+                 
+                 # filter the fitted data points for the selected chunk of subjects
+                 my.plot$layers[[2]]$data <- my.plot$layers[[2]]$data \%>\%
+                 filter(subject \%in\% subjects_to_plot_splitted[[i]]) \%>\%
+                 droplevels()
+                 
+                 print (my.plot + geom_line(colour = "red"))
+              }
+              
+              dev.off()  }
+              
+              
 
 }
 \seealso{

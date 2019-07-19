@@ -18,7 +18,8 @@
 #' Its calculation does not rely on curve fitting and gives a direct comparison with the performance of normally sighted individuals.
 #' The ACC calculation uses the print size values non corrected for non-standard viewing distance.
 #'
-#' For more details on the Reading Accessibility Index, see \url{http://archopht.jamanetwork.com/article.aspx?articleid=2487490}
+#' For more details on the Reading Accessibility Index, see http://doi.org/10.1001/jamaophthalmol.2015.6097
+#' 
 #'
 #' @section Warning:
 #' To ensure that missing data are handled properly and that ACC calculation is correct, data need to be entered along certain rules:

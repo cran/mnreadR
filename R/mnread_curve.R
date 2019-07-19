@@ -130,16 +130,18 @@
 #' num_pages = length(unique(data_s2$subject))
 #' 
 #' # create a pdf file 
+#' \dontrun{ 
 #' pdf ("MNREAD_curves.pdf", width = 10.5, height = 8, paper = "special", useDingbats = TRUE)
 #' 
 #' # wrap the plots over several pages
 #' for (i in seq(num_pages)){
 #'     p <- mnreadCurve(data_s2 %>% filter (subject == sort(unique(data_s2$subject))[i]),
-#'                      ps, vd, rt, err, subject, polarity)
+#'                      ps, vd, rt, err, subject, polarity) 
 #'     print(p)
 #' }
 #' 
-#' dev.off()
+#' dev.off()  
+#' }
 #' 
 #' 
 #' @importFrom stats sd

@@ -151,8 +151,8 @@ curveParam_RT <- function(data, print_size, viewing_distance, reading_time, erro
         group_by (!!!grouping_var, .drop = TRUE) %>%
         arrange (correct_ps) %>% # sort temp_df by correct_ps in ascending order
         mutate (nb_row = n())  %>%
-        do (mansfield_algo(., .$correct_ps, .$nb_row, .$log_rs))  ) %>%
-      filter (.drop != "NA") %>% select (-.drop)
+        do (mansfield_algo(., .$correct_ps, .$nb_row, .$log_rs))  ) #%>%
+      # filter (.drop != "NA") %>% select (-.drop)
   }
 }
 
@@ -303,8 +303,8 @@ curveParam_RS <- function(data, print_size, viewing_distance, reading_speed, ...
         group_by (!!!grouping_var, .drop = TRUE) %>%
         arrange (correct_ps) %>% # sort temp_df by correct_ps in ascending order
         mutate (nb_row = n()) %>%
-        do (mansfield_algo(., .$correct_ps, .$nb_row, .$log_rs))  ) %>%
-      filter (.drop != "NA") %>% select (-.drop)
+        do (mansfield_algo(., .$correct_ps, .$nb_row, .$log_rs))  ) #%>%
+      # filter (.drop != "NA") %>% select (-.drop)
   }
 }
 
