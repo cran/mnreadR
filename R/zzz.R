@@ -4,7 +4,7 @@
 
 .onAttach <- function(libname, pkgname) {
   packageStartupMessage("Welcome to the MNREAD R package!
-             v2.1.3 now includes several functions to perform NLME modeling :-)")
+             v2.1.4 now includes several functions to perform NLME modeling :-)")
 }
 
 
@@ -15,7 +15,7 @@
     devtools.path = "~/R-dev",
     devtools.install.args = "",
     devtools.name = "mnreadR",
-    devtools.desc.author = '"Aurelie Calabrese <acalabre@umn.edu> [aut, cre]"',
+    devtools.desc.author = '"Aurelie Calabrese <aurelie.calabrese@inria.fr> [aut, cre]"',
     devtools.desc.license = "What license is it under?",
     devtools.desc.suggests = NULL,
     devtools.desc = list()

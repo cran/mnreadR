@@ -1,14 +1,14 @@
-0e039af30637d84baae1f9588f42f781 *DESCRIPTION
+35e7871d36d2ecfbfbd482d200c5f0f0 *DESCRIPTION
 bc81b1d5d9eee076bc5126956d1357c4 *NAMESPACE
-3091c36c87b1ebcdb479938e4fac50b5 *NEWS.md
+f1878c26f5fd49f638893d49c6d68bc7 *NEWS.md
 980c1e2a1171f4545e74f2e6915d0a8c *R/acc_index.R
 c66b4632d3ed932c419243c35e7060f1 *R/all_mnread_param.R
 6e11f8e569c607a8028068d2aeba0c82 *R/curve_param.R
 9be0d24d7529af28fec5353118fa565b *R/data_low_vision.R
 cec225e8e85fa80a8af8a723177cfcb5 *R/data_normal_vision.R
 11781712bea2a6891d1fd74dc9a86a45 *R/mansfield_algorithm_2019.R
-e8f22caeb03b3ed9ffe78664d00e616d *R/mnreadR.R
-26f9f5a3b947a8e3ae4069467410bab9 *R/mnread_curve.R
+c02654e60e05957dd1a06dc6c1a092e1 *R/mnreadR.R
+a3a716aeee9d223768ac91a901eeb2cb *R/mnread_curve.R
 d46f5d6f322dd7545e81b25630a6e444 *R/nlmePredict_PS.R
 77aec683a3bfe341ba458e95046e60b7 *R/nlmePredict_RS.R
 0728b0b6a703a087c2260f1126032a35 *R/nlme_curve.R
@@ -17,7 +17,7 @@ f6ebfba32da346499a37940136bf859e *R/nlme_param.R
 60bbc3c1075a93cf697c63bb900229ea *R/reading_acuity.R
 de9f40b38522af69a08fb93aecfde5fc *R/reading_speed.R
 ea378ef9811b80d512d9fad4a45fd0b1 *R/viewing_distance_correction.R
-6b271cce6314ff2e1b69755f8d86a7fd *R/zzz.R
+30bfaad413e44c6f124f155fe0daf9ed *R/zzz.R
 2fb097c9542528db6c2030d0b24eec6d *data/data_low_vision.rda
 ffa095223fbf01c1587c0e1f3a06341a *data/data_normal_vision.rda
 8e1a43a163f2a45b3009f318fc2f9acf *inst/CITATION

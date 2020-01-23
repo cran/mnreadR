@@ -1,3 +1,9 @@
+# mnreadR 2.1.4
+========
+
+The whole package was updated to run properly with the new version of tidyselect 1.0.0
+
+
 # mnreadR 2.1.3
 ========
 
@@ -10,7 +16,7 @@ Follow-up updates to fix minor bugs
 
 mnreadCurve was updated to fix a bug that prevented the MNREAD curve to be plotted in cases where noisy/incomplete/atypical data made MRS and CPS calculation impossible with the original algorithm described in Legge (2007).  
 
-The whole package was updated to continue to run properly with the new version of dplyr 0.8.0
+The whole package was updated to run properly with the new version of dplyr 0.8.0
 
 
 
@@ -27,7 +33,7 @@ Functions that calculate the Reading Accessibility Index - accIndex() and mnread
 The whole logic of the NLME fitting has been modified to allow for more flexible and transparent analysis. The package now provides separate functions to run the model, estimate the MNREAD parameters and plot the MNREAD curves.
 
 1 main function has been added: 
-*   nlmeModel() -> nonlinear mixed-effect (NLME) modeling of the MNREAD data. This function returns a list of two objects: a first object of class dataframe; a second object  of class nlme that can be further explored using generic functions from the nlme package.
+*   nlmeModel() -> nonlinear mixed-effect (NLME) modeling of the MNREAD data. This function returns a list of two objects: a first object of class dataframe; a second object of class nlme that can be further explored using generic functions from the nlme package.
 
 2 functions have been modified: 
 *   nlmeCurve() ->  this function does not run the NLME model anymore!!! It now uses the NLME model created by nlmeModel() to plot the individual MNREAD curves. 
