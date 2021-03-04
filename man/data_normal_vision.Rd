@@ -4,7 +4,8 @@
 \name{data_normal_vision}
 \alias{data_normal_vision}
 \title{MNREAD data collected in subjects with normal vision.}
-\format{A data frame with 684 rows and 6 variables, where each line stores data for one sentence:
+\format{
+A data frame with 684 rows and 6 variables, where each line stores data for one sentence:
 \describe{
   \item{subject}{subject ID code}
   \item{polarity}{test polarity used (regular or reverse)}
@@ -13,7 +14,8 @@
   \item{rt}{reading time in seconds}
   \item{err}{number of errors}
   ...
-}}
+}
+}
 \source{
 Data collected at the Minnesota Laboratory for Low-Vision Research (UMN)
 }

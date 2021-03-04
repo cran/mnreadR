@@ -3,7 +3,6 @@
 \docType{package}
 \name{mnreadR}
 \alias{mnreadR}
-\alias{mnreadR-package}
 \title{mnreadR: An R package for analyzing MNREAD data}
 \description{
 mnreadR provides simple functions to estimate the four MNREAD parameters:

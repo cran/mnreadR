@@ -1,7 +1,7 @@
 Package: mnreadR
 Type: Package
 Title: MNREAD Parameters Estimation and Curve Plotting
-Version: 2.1.4
+Version: 2.1.5
 Authors@R: c(
     person("Aurélie", "Calabrèse", email = "aurelie.calabrese@inria.fr", role = c("aut", "cre")),
     person("J. Steve", "Mansfield", email = "steve.mansfield@plattsburgh.edu", role = "aut"),
@@ -21,12 +21,12 @@ URL: http://legge.psych.umn.edu/mnread-acuity-charts
 License: GPL-2
 Encoding: UTF-8
 LazyData: true
-RoxygenNote: 6.1.1
+RoxygenNote: 7.1.1
 NeedsCompilation: no
-Packaged: 2020-01-22 14:37:05 UTC; Aurelie
+Packaged: 2021-03-03 17:18:19 UTC; Aurelie
 Author: Aurélie Calabrèse [aut, cre],
   J. Steve Mansfield [aut],
   Gordon E. Legge [aut]
 Maintainer: Aurélie Calabrèse <aurelie.calabrese@inria.fr>
 Repository: CRAN
-Date/Publication: 2020-01-23 13:30:08 UTC
+Date/Publication: 2021-03-04 01:30:02 UTC

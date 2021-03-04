@@ -5,8 +5,14 @@
 \title{Standard estimation of Maximum Reading Speed (MRS) and Critical Print Size (CPS) 
 using individual data of reading time and number of errors.}
 \usage{
-curveParam_RT(data, print_size, viewing_distance, reading_time, errors,
-  ... = NULL)
+curveParam_RT(
+  data,
+  print_size,
+  viewing_distance,
+  reading_time,
+  errors,
+  ... = NULL
+)
 }
 \arguments{
 \item{data}{The name of your dataframe}

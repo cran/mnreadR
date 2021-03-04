@@ -4,8 +4,14 @@
 \alias{readingAcuity}
 \title{Reading Acuity (RA) calculation}
 \usage{
-readingAcuity(data, print_size, viewing_distance, reading_time, errors,
-  ... = NULL)
+readingAcuity(
+  data,
+  print_size,
+  viewing_distance,
+  reading_time,
+  errors,
+  ... = NULL
+)
 }
 \arguments{
 \item{data}{The name of your dataframe}

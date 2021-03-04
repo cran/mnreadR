@@ -4,8 +4,7 @@
 \alias{curveParam_RS}
 \title{Standard estimation of Maximum Reading Speed (MRS) and Critical Print Size (CPS) using reading speed values.}
 \usage{
-curveParam_RS(data, print_size, viewing_distance, reading_speed,
-  ... = NULL)
+curveParam_RS(data, print_size, viewing_distance, reading_speed, ... = NULL)
 }
 \arguments{
 \item{data}{The name of your dataframe}

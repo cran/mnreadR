@@ -1,3 +1,9 @@
+# mnreadR 2.1.5
+========
+
+A bug was fixed in the function mansfield_algo() in order to improve estimation of the Maximum Reading Speed (MRS). In previous versions, MRS was estimated as the mean of ALL the reading speed measures above the Critical Print Size (CPS). In this fixed version, MRS is now estimated by averaging all reading speed within the optimal plateau, therefore excluding potential slow reading speed measures occurring at the largest print sizes.
+
+
 # mnreadR 2.1.4
 ========
 
