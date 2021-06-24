@@ -94,7 +94,7 @@ mansfield_algo <- function(df, logmar, nb_row, logRS) {
           if(p_mean > fastest_mean) {
             fastest_mean <- p_mean
             fastest_std <- p_std
-            fastest_lps <- logmar[l] # lower bound of the optimal plateau: this is the CPS we will use!!
+            fastest_cps <- logmar[l] # lower bound of the optimal plateau: this is the CPS we will use!!
             fastest_ups <- logmar[u] } # upper bound of the optimal plateau
         }}}
 
@@ -106,10 +106,10 @@ mansfield_algo <- function(df, logmar, nb_row, logRS) {
 
     # if CPS was estimated properly, MRS is defined accordingly
     if (is.na(fastest_cps) == FALSE) {
-      CPS <- fastest_lps
+      CPS <- fastest_cps
       MRS = as.numeric(
         df %>%
-          filter (logmar >= fastest_lps & logmar <= fastest_ups) %>%
+          filter (logmar >= fastest_cps & logmar <= fastest_ups) %>%
           summarise (mean(rs))) }
       # MRS = round(mrs, 2)
 

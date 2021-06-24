@@ -1,3 +1,9 @@
+# mnreadR 2.1.6
+========
+
+Fixes a major bug in curve_param_RT() and curve_param_RS() that appeared with version 2.1.5 
+
+
 # mnreadR 2.1.5
 ========
 

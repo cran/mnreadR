@@ -35,7 +35,7 @@
 #' The Maximum Reading Speed is estimated as the mean reading speed for print sizes included in the plateau.
 #' The Critical Print Size is defined as the smallest print size on the plateau.
 #'
-#' For more details on the parameters estimation, see  \url{http://legge.psych.umn.edu/mnread-acuity-charts}
+#' For more details on the parameters estimation, see  \url{https://legge.psych.umn.edu/mnread-acuity-charts}
 #'
 #' For more details on the original algorithm, see Chapter 5 of this book:\\
 #' Legge, G.E. (2007). Psychophysics of Reading in Normal and Low Vision. Mahwah, NJ & London: Lawrence Erlbaum Associates. ISBN 0-8058-4328-0

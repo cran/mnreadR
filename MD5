@@ -1,12 +1,12 @@
-5b3b2a3a41002a7735d4769e01fe1c51 *DESCRIPTION
+8672d663db64ff80d33b25917238cd04 *DESCRIPTION
 bc81b1d5d9eee076bc5126956d1357c4 *NAMESPACE
-8e1d3015e24d00fbf2b31fc91d61eefc *NEWS.md
+7217cb70c5df70ce0ef29d9784ff05a1 *NEWS.md
 980c1e2a1171f4545e74f2e6915d0a8c *R/acc_index.R
-c66b4632d3ed932c419243c35e7060f1 *R/all_mnread_param.R
+745ab21571276894f5ef811f22f1af22 *R/all_mnread_param.R
 6e11f8e569c607a8028068d2aeba0c82 *R/curve_param.R
 9be0d24d7529af28fec5353118fa565b *R/data_low_vision.R
 cec225e8e85fa80a8af8a723177cfcb5 *R/data_normal_vision.R
-20021caaf5b36d6053e20710d4868183 *R/mansfield_algorithm_2021.R
+ae167863e9d67f1e861cf2d939baf3ca *R/mansfield_algorithm_2021.R
 c02654e60e05957dd1a06dc6c1a092e1 *R/mnreadR.R
 a3a716aeee9d223768ac91a901eeb2cb *R/mnread_curve.R
 d46f5d6f322dd7545e81b25630a6e444 *R/nlmePredict_PS.R
@@ -28,7 +28,7 @@ ffa095223fbf01c1587c0e1f3a06341a *data/data_normal_vision.rda
 b03fa74d14767423ee1c06690b4de1ff *man/data_normal_vision.Rd
 d73927f6ba18ae94f06491ee18b17b81 *man/logMARcorrect.Rd
 87ec860bcebb38dd8f534191097b3995 *man/mnreadCurve.Rd
-0e1eaa155de6f303d2447c87912d381f *man/mnreadParam.Rd
+9b7f4a884918d7aa99c1ce7309787cb7 *man/mnreadParam.Rd
 ffc2cf11d93d719581c5444889bf2ca2 *man/mnreadR.Rd
 52e8c156a437d70fd523a9293fd7adb7 *man/nlmeCurve.Rd
 b42e8289b1bfd38bff9a7f763b153da0 *man/nlmeModel.Rd
