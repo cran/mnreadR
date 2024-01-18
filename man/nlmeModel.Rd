@@ -90,25 +90,25 @@ data_regular <- data_low_vision \%>\%
     filter (polarity == "regular")
 
 # run the NLME model for data grouped by subject
-\dontrun{ model_simple <- nlmeModel(data_regular, ps, vd, rt, err, subject) }
+\donttest{ model_simple <- nlmeModel(data_regular, ps, vd, rt, err, subject) }
 
 # to print the model summary
-\dontrun{ summary(model_simple[[2]]) }
+\donttest{ summary(model_simple[[2]]) }
 
 # to print the first 3 rows of the cleaned dataset containing the raw data and used to run the model
-\dontrun{ head(model_simple[[1]], 3) }
+\donttest{ head(model_simple[[1]], 3) }
 
 #------
 
 # run the NLME model on the whole dataset with polarity nested within subject
-\dontrun{ model_nested <- lmeModel(data_low_vision, ps, vd, rt, err, subject,
+\donttest{ model_nested <- lmeModel(data_low_vision, ps, vd, rt, err, subject,
                                    nested = polarity) }
 
 #------
 
 # run theNLME model on the whole dataset with polarity nested within subject 
 # and grouped based on treatment
-\dontrun{ model_nested_grouped <- nlmeModel(data_low_vision, ps, vd, rt, err, subject,
+\donttest{ model_nested_grouped <- nlmeModel(data_low_vision, ps, vd, rt, err, subject,
                                             nested = polarity, group = treatment) }
 
 

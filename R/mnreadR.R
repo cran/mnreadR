@@ -25,10 +25,10 @@
 #'   }
 #'
 #' @section Notes
-#' Feel free to email me at \email{aurelie.calabrese@inria.fr} if you have any questions or spot any bugs! 
+#' Feel free to email me at \email{aurelie.calabrese@univ-amu.fr} if you have any questions or spot any bugs! 
 #'
 #' @section Contact
-#' Aur\'elie Calabr\`ese - \email{aurelie.calabrese@inria.fr}
+#' Aur\'elie Calabr\`ese - \email{aurelie.calabrese@univ-amu.fr}
 #'
 #' @docType package
 #' @name mnreadR

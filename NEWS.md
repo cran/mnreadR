@@ -1,3 +1,9 @@
+# mnreadR 2.1.7
+========
+
+Overall update to use reframe() in place of summarize() when needed
+
+
 # mnreadR 2.1.6
 ========
 

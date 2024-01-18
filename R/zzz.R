@@ -14,7 +14,7 @@
     devtools.path = "~/R-dev",
     devtools.install.args = "",
     devtools.name = "mnreadR",
-    devtools.desc.author = '"Aurelie Calabrese <aurelie.calabrese@inria.fr> [aut, cre]"',
+    devtools.desc.author = '"Aurelie Calabrese <aurelie.calabrese@univ-amu.fr> [aut, cre]"',
     devtools.desc.license = "What license is it under?",
     devtools.desc.suggests = NULL,
     devtools.desc = list()

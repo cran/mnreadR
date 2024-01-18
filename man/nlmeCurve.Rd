@@ -40,31 +40,31 @@ data_regular <- data_low_vision \%>\%
     filter (polarity == "regular")
 
 # run the NLME model for data grouped by subject
-\dontrun{ nlme_model <- nlmeModel(data_regular, ps, vd, rt, err, subject) }
+\donttest{ nlme_model <- nlmeModel(data_regular, ps, vd, rt, err, subject) }
 
 #------
 
 # plot MNREAD curves and CPS with a default CPS criterion of '90 of MRS' 
-\dontrun{ nlmeCurve(nlme_model) }
+\donttest{ nlmeCurve(nlme_model) }
 
 # plot MNREAD curves without the CPS for a default CPS criterion of '90 of MRS' 
-\dontrun{ nlmeCurve(nlme_model, FALSE) }
+\donttest{ nlmeCurve(nlme_model, FALSE) }
 
 # plot MNREAD curves and CPS with a specific CPS criterion of '80 of MRS'
-\dontrun{ nlmeCurve(nlme_model, TRUE, 0.8) }
+\donttest{ nlmeCurve(nlme_model, TRUE, 0.8) }
 
 #------
 
 # Once created, the NLME curve can be further customized using ggplot2 
 
 # plot the NLME curve 
-\dontrun{ my_plot <- nlmeCurve(nlme_model) }
+\donttest{ my_plot <- nlmeCurve(nlme_model) }
 
 # display my.plot
-\dontrun{ print(my_plot) }
+\donttest{ print(my_plot) }
 
 # modify my.plot
-\dontrun{ my_new_plot <- my_plot + 
+\donttest{ my_new_plot <- my_plot + 
  # overwrites the raw data points
     geom_point(data = nlme_model[[1]], aes(x=correct_ps, y = rs), size = 4) + 
  # changes the colors of the curve and raw data (effective only for nested designs)
@@ -75,7 +75,7 @@ data_regular <- data_low_vision \%>\%
     scale_x_continuous(breaks = seq (-0.5,2.5,0.4))  }
 
 # display my.new.plot                                                                        
-\dontrun{ print(my_new_plot) }
+\donttest{ print(my_new_plot) }
 
 
 #------
@@ -87,22 +87,22 @@ data_regular <- data_low_vision \%>\%
 subjects_to_keep <- paste ("s", 1:4, sep = "")
 
 # first filter the original data points (data called in the first layer)
-\dontrun{ my_plot$data <- my_plot$data \%>\%
+\donttest{ my_plot$data <- my_plot$data \%>\%
     filter(subject \%in\% subjects_to_keep) \%>\%
     droplevels() }
     
 # then filter the fitted data points (data called in the second layer)
-\dontrun{ my_plot$layers[[2]]$data <- my_plot$layers[[2]]$data \%>\% 
+\donttest{ my_plot$layers[[2]]$data <- my_plot$layers[[2]]$data \%>\% 
     filter(subject \%in\% subjects_to_keep) \%>\% 
     droplevels() }
   
 # and finally, if 'displayCPS' was set to TRUE, filter the data used to display the CPS
-\dontrun{ my_plot$layers[[4]]$data <- my_plot$layers[[4]]$data \%>\% 
+\donttest{ my_plot$layers[[4]]$data <- my_plot$layers[[4]]$data \%>\% 
     filter(subject \%in\% subjects_to_keep) \%>\%
     droplevels() }
     
 # plot the restricted my.plot
-\dontrun{ my_plot }
+\donttest{ my_plot }
 
 #------
 
@@ -122,7 +122,7 @@ subjects_to_plot <- unique(as.character(data_low_vision$subject))
 subjects_to_plot_splitted <- split(subjects_to_plot, ceiling(seq_along(subjects_to_plot)/facet_nb))
 
 # create a pdf and wrap plots over several pages
-\dontrun{ pdf("nlme-MNREAD-curves.pdf",
+\donttest{ pdf("nlme-MNREAD-curves.pdf",
               width = 10.5, height = 8,
               paper="USr", useDingbats=T)
               

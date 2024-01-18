@@ -41,19 +41,19 @@ data_regular <- data_low_vision \%>\%
     filter (polarity == "regular")
 
 # run the NLME model for data grouped by subject
-\dontrun{ nlme_model <- nlmeModel(data_regular, ps, vd, rt, err, subject) }
+\donttest{ nlme_model <- nlmeModel(data_regular, ps, vd, rt, err, subject) }
 
 #------
 
 # extract the critical print size required 
 # to achieve 40 words/min (ie. spot reading) according to the NLME fit 
-\dontrun{ nlmePredict_PS(nlme_model, 40) }
+\donttest{ nlmePredict_PS(nlme_model, 40) }
 
 #------
 
 # extract the critical print size required 
 # to achieve 80 words/min (ie. fluent reading) according to the NLME fit 
-\dontrun{ nlmePredict_PS(nlme_model, 80) }
+\donttest{ nlmePredict_PS(nlme_model, 80) }
 
 
 

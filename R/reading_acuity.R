@@ -79,7 +79,7 @@ readingAcuity <- function(data, print_size, viewing_distance, reading_time, erro
   if ( missing(...) )  {
     as.data.frame(
       temp_df %>%
-        summarise (min_ps = min(correct_ps),
+        reframe (min_ps = min(correct_ps),
                    sum_err = sum((errors10), na.rm=T)) %>%
         mutate (RA = min_ps + sum_err*(0.01)) %>%
         select (-min_ps, -sum_err) )
@@ -91,7 +91,7 @@ readingAcuity <- function(data, print_size, viewing_distance, reading_time, erro
     as.data.frame(
       temp_df %>%
         group_by (!!!grouping_var) %>%
-        summarise (min_ps = min(correct_ps),
+        reframe (min_ps = min(correct_ps),
                    sum_err = sum((errors10), na.rm=T)) %>%
         mutate (RA = min_ps + sum_err*(0.01)) %>%
         select (-min_ps, -sum_err)  )

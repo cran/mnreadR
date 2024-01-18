@@ -74,7 +74,7 @@
 #'    filter (subject == "s1", polarity == "regular")
 #'
 #' # plot the MNREAD curve 
-#' \dontrun{ mnreadCurve(data_s1_reg, ps, vd, rt, err)  }
+#' \donttest{ mnreadCurve(data_s1_reg, ps, vd, rt, err)  }
 #' 
 #' #------
 #'
@@ -84,7 +84,7 @@
 #'    filter (subject == "s1")
 #'
 #' # plot the MNREAD curve using ONE GROUPING ARGUMENT (ie. polarity)
-#'  \dontrun{ mnreadCurve(data_s1, ps, vd, rt, err, polarity)  }
+#'  \donttest{ mnreadCurve(data_s1, ps, vd, rt, err, polarity)  }
 #'
 #' #------
 #'
@@ -93,7 +93,7 @@
 #' data_s2 <- data_low_vision %>%
 #'    filter (subject == "s1" | subject == "s2")
 #'
-#'  \dontrun{ mnreadCurve(data_s2, ps, vd, rt, err, subject, polarity)  }
+#'  \donttest{ mnreadCurve(data_s2, ps, vd, rt, err, subject, polarity)  }
 #' 
 #' #------
 #'
@@ -130,7 +130,7 @@
 #' num_pages = length(unique(data_s2$subject))
 #' 
 #' # create a pdf file 
-#' \dontrun{ 
+#' \donttest{ 
 #' pdf ("MNREAD_curves.pdf", width = 10.5, height = 8, paper = "special", useDingbats = TRUE)
 #' 
 #' # wrap the plots over several pages
@@ -208,7 +208,7 @@ mnreadCurve <- function(data, print_size, viewing_distance, reading_time, errors
     # calculate reading acuity
     RAdf <- as.data.frame(
       temp_df1 %>%
-        summarise (min_ps = min(correct_ps),
+        reframe (min_ps = min(correct_ps),
                    sum_err = sum((errors10), na.rm=T)) %>%
         mutate (RA = min_ps + sum_err*(0.01)) %>%
         select (-min_ps, -sum_err)  )
@@ -242,7 +242,7 @@ mnreadCurve <- function(data, print_size, viewing_distance, reading_time, errors
     RAdf <- as.data.frame(
       temp_df1 %>%
         group_by (!!!grouping_var, .drop = TRUE) %>%
-        summarise (min_ps = min(correct_ps),
+        reframe (min_ps = min(correct_ps),
                    sum_err = sum((errors10), na.rm=T)) %>%
         mutate (RA = min_ps + sum_err*(0.01)) %>%
         select (-min_ps, -sum_err)  ) 

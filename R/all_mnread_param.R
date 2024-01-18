@@ -159,7 +159,7 @@ mnreadParam <- function(data, print_size, viewing_distance, reading_time, errors
     # calculate reading acuity
     RAdf <- as.data.frame(
       temp_df1 %>%
-        summarise (min_ps = min(correct_ps),
+        reframe (min_ps = min(correct_ps),
                    sum_err = sum((errors10), na.rm=T)) %>%
         mutate (RA = min_ps + sum_err*(0.01)) %>%
         select (-min_ps, -sum_err) )
@@ -189,7 +189,7 @@ mnreadParam <- function(data, print_size, viewing_distance, reading_time, errors
     RAdf <- as.data.frame(
       temp_df1 %>%
         group_by (!!!grouping_var, .drop = TRUE) %>%
-        summarise (min_ps = min(correct_ps),
+        reframe (min_ps = min(correct_ps),
                    sum_err = sum((errors10), na.rm=T)) %>%
         mutate (RA = min_ps + sum_err*(0.01)) %>%
         select (-min_ps, -sum_err)  ) #%>%

@@ -82,7 +82,7 @@ mansfield_algo <- function(df, logmar, nb_row, logRS) {
         omax = as.numeric(
           df %>%
             filter (logmar < logmar[l] | logmar > logmar[u]) %>%
-            summarise (max(rs)))
+            reframe (max(rs)))
         # calculates mean log_rs within the current plateau (i.e., [l:u] window)
         p_mean <- mean(logRS[l:u])
         # calculates sd log_rs within the current plateau (i.e., [l:u] window)
@@ -110,7 +110,7 @@ mansfield_algo <- function(df, logmar, nb_row, logRS) {
       MRS = as.numeric(
         df %>%
           filter (logmar >= fastest_cps & logmar <= fastest_ups) %>%
-          summarise (mean(rs))) }
+          reframe (mean(rs))) }
       # MRS = round(mrs, 2)
 
     return(as.data.frame(cbind(MRS, CPS)))

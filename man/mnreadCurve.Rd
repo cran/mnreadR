@@ -87,7 +87,7 @@ data_s1_reg <- data_low_vision \%>\%
    filter (subject == "s1", polarity == "regular")
 
 # plot the MNREAD curve 
-\dontrun{ mnreadCurve(data_s1_reg, ps, vd, rt, err)  }
+\donttest{ mnreadCurve(data_s1_reg, ps, vd, rt, err)  }
 
 #------
 
@@ -97,7 +97,7 @@ data_s1 <- data_low_vision \%>\%
    filter (subject == "s1")
 
 # plot the MNREAD curve using ONE GROUPING ARGUMENT (ie. polarity)
- \dontrun{ mnreadCurve(data_s1, ps, vd, rt, err, polarity)  }
+ \donttest{ mnreadCurve(data_s1, ps, vd, rt, err, polarity)  }
 
 #------
 
@@ -106,7 +106,7 @@ data_s1 <- data_low_vision \%>\%
 data_s2 <- data_low_vision \%>\%
    filter (subject == "s1" | subject == "s2")
 
- \dontrun{ mnreadCurve(data_s2, ps, vd, rt, err, subject, polarity)  }
+ \donttest{ mnreadCurve(data_s2, ps, vd, rt, err, subject, polarity)  }
 
 #------
 
@@ -143,7 +143,7 @@ print(my.new.plot)
 num_pages = length(unique(data_s2$subject))
 
 # create a pdf file 
-\dontrun{ 
+\donttest{ 
 pdf ("MNREAD_curves.pdf", width = 10.5, height = 8, paper = "special", useDingbats = TRUE)
 
 # wrap the plots over several pages

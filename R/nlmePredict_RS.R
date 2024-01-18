@@ -45,12 +45,12 @@
 #'     filter (polarity == "regular")
 #'
 #' # run the NLME model for data grouped by subject
-#' \dontrun{ nlme_model <- nlmeModel(data_regular, ps, vd, rt, err, subject) }
+#' \donttest{ nlme_model <- nlmeModel(data_regular, ps, vd, rt, err, subject) }
 #'
 #' #------
 #' 
 #' # extract reading speed achieved at 1.6 logMAR according to the NLME fit 
-#' \dontrun{ nlmePredict_RS(nlme_model, 1.6) }
+#' \donttest{ nlmePredict_RS(nlme_model, 1.6) }
 #'
 #'
 #'

@@ -138,7 +138,7 @@ acc_algo <- function(df) {
   #   If there are some missing values, the ACC will be set to NA
   ACC <- as.data.frame (
     df %>%
-      summarize (ACC = mean (df$rs) / 200) )
+      reframe (ACC = mean (df$rs) / 200) )
 
   # If ACC was set to NA, it means that Reading Speed contains some missing values
   # Here I set rules to deal with these missing values
@@ -187,7 +187,7 @@ acc_algo <- function(df) {
   # I calculate the ACC again now that I have assign a value to each missing reading speed
   ACC <- as.data.frame(
     df %>%
-      summarize (ACC = mean (df$rs) / 200) )
+      reframe (ACC = mean (df$rs) / 200) )
   
   return(ACC)
   

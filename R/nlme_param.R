@@ -51,15 +51,15 @@
 #'     filter (polarity == "regular")
 #'
 #' # run the NLME model for data grouped by subject
-#' \dontrun{ nlme_model <- nlmeModel(data_regular, ps, vd, rt, err, subject) }
+#' \donttest{ nlme_model <- nlmeModel(data_regular, ps, vd, rt, err, subject) }
 #'
 #' #------
 #'
 #' # run the parameters' estimation for a default CPS criterion of '90 of MRS' 
-#' \dontrun{ nlmeParam(nlme_model) }
+#' \donttest{ nlmeParam(nlme_model) }
 #' 
 #' # run the parameters' estimation for a specific CPS criterion of '80 of MRS'
-#' \dontrun{ nlmeParam(nlme_model, 0.8) }
+#' \donttest{ nlmeParam(nlme_model, 0.8) }
 #' 
 #'
 #' 
